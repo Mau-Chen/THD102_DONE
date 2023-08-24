@@ -1,0 +1,1744 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <link href="./images/pgo.ico" rel="icon" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Abel&family=Noto+Sans+TC:wght@100;200;300;400;500;600;700;800;900&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
+  rel="stylesheet"
+/>
+
+    <link rel="stylesheet" href="./css/style.css" />
+    <title>GO司機 | PetpaGo</title>
+  </head>
+  <body>
+    <div class="wrapper driver">
+      <header>
+  <a href="index.html">
+    <img src="./images/logo/PetpaGo-logo.svg" alt="PetpaGo logo" />
+  </a>
+  <ul class="navList col-10">
+    <li class="nav_item" data-content="GO旅宿" onclick="navigateTo('hostel.html')">
+      <a href="hostel.html">GO旅宿</a>
+    </li>
+    <li class="nav_item" data-content="GO司機" onclick="navigateTo('driver.html')">
+      <a href="driver.html">GO司機</a>
+    </li>
+    <li class="nav_item" data-content="GO有料" onclick="navigateTo('photowall.html')">
+      <a href="photowall.html">GO有料</a>
+    </li>
+    <li class="shoop">
+      <a href="shopping.html">
+        <img src="./images/icon/header-icon/shoop.svg" alt="shopCar"
+      /></a>
+    </li>
+    <li><!-- #ModalPage為Vue掛載的位置，不管用什麼裝置觸發，都必須要有這個ID -->
+<!-- <div type="button" id="btn_log" class="btn_4">
+  登入
+</div> -->
+
+<div id="ModalPage" class="login123">
+  <!-- 此處為用@click綁定事件，用data中的"ispop"資料，來控制燈箱跳出
+        如果要綁定在其它物件上，只要打上@click這條即可觸發。 -->
+  <div type="button" @click="ispop = true; changePage(0)" class="btn_4" v-show="success === false">
+    登入
+  </div>
+  <div v-show="success === true">
+    <a href="../member.html">
+      <svg width="25" height="25" viewBox="0 0 67 68" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M33.5003 0.666748C15.1003 0.666748 0.166992 15.6001 0.166992 34.0001C0.166992 52.4001 15.1003 67.3334 33.5003 67.3334C51.9003 67.3334 66.8337 52.4001 66.8337 34.0001C66.8337 15.6001 51.9003 0.666748 33.5003 0.666748ZM33.5003 14.0001C39.9337 14.0001 45.167 19.2334 45.167 25.6667C45.167 32.1001 39.9337 37.3334 33.5003 37.3334C27.067 37.3334 21.8337 32.1001 21.8337 25.6667C21.8337 19.2334 27.067 14.0001 33.5003 14.0001ZM33.5003 60.6668C26.7337 60.6668 18.7337 57.9334 13.0337 51.0668C18.8723 46.4858 26.0791 43.9961 33.5003 43.9961C40.9216 43.9961 48.1283 46.4858 53.967 51.0668C48.267 57.9334 40.267 60.6668 33.5003 60.6668Z"
+          fill="#09003E" />
+      </svg>
+    </a>
+
+  </div>
+  <!-- 用v-if來渲染出燈箱畫面，此處的v-if渲染內容為燈箱主體，不可更動。 -->
+  <div v-if="ispop === true" class="lightbox" @click="ispop = false">
+    <!-- loginpage_base為燈箱主版面，未RWD前寬度已經寫死為500px。 -->
+    <div class="loginpage_base" @click.stop>
+      <!-- close中存在關閉燈箱渲染的控件，為燈箱主體，不可更改 -->
+      <div class="close">
+        <div class="icon" @click="ispop = false">
+          <img src="./images/icon/components-icon/close-line.svg" alt="close" />
+        </div>
+      </div>
+      <!-- 此處為燈箱切換頁面的主體，用v-if渲染出不同的內文，用data:index來控制要渲染的頁面。
+                    同一class但不同 index的div 即為不同的頁面，所有要開發的頁面，都要放在同一層級。 -->
+
+      <!-- index 0 登入頁面 -->
+      <div v-if="index === 0" class="loginPage">
+        <div class="pageIsideContainer">
+          <h5>登入/註冊</h5>
+          <!-- 此處綁定了自行寫入的post事件 -->
+          <form @submit.prevent="handleSubmit">
+            <!-- sectionHead本身不包含任何屬性，為了要完全貼齊form的上轅。 -->
+            <div class="sectionHead">
+              <label for="account">帳號</label>
+              <input type="email" id="account" name="account" placeholder="請輸入E-MAIL" class="loginType"
+                v-model="account" />
+            </div>
+            <!-- sectionBody包含了向上與向下的間距，要調整的方向在這裡。 -->
+            <!-- <div class="sectionBody"> -->
+            <label for="password">密碼</label>
+            <input type="password" id="password" name="password" placeholder="請輸入密碼" class="loginType noMb24"
+              v-model="password" />
+            <a class="mb_24" @click="changePage(1)">忘記密碼?</a>
+            <!-- </div> -->
+            <div class="submit">
+              <input type="button" class="btn_5" value="登入" @click="ispop = false, success = true" />
+            </div>
+          </form>
+          <div class="register">
+            <p>還沒成為PetpaGo會員?</p>
+            <span @click="changePage(4)">立即註冊</span>
+          </div>
+          <div class="otherTypeToLogin">
+            <p>或其它登入方式</p>
+          </div>
+          <div class="otherIcon">
+            <a href="#">
+              <img src="./images/icon/components-icon/fb-Logo.svg" alt="" />
+            </a>
+            <a href="#">
+              <img src="./images/icon/components-icon/google-Logo.svg" alt="" />
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- index 1 忘記密碼接入頁面 -->
+      <div v-if="index === 1" class="loginPage">
+        <div class="pageIsideContainer">
+          <h5>重設密碼</h5>
+          <p class="textColor_m-font">
+            輸入你註冊PetpaGo帳號的電子信箱，我們會發送重設密碼的連結
+          </p>
+          <form action="#" method="post">
+            <div class="sectionHead">
+              <label for="checkEmail">電子信箱</label>
+              <input type="email" placeholder="請輸入Email" id="checkEmail" class="loginType" />
+            </div>
+            <div class="submit">
+              <input type="button" class="btn_5" value="確認" @click="changePage(2)" />
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- index 2 修改密碼頁面 -->
+      <div v-if="index === 2" class="loginPage">
+        <div class="pageIsideContainer">
+          <h5>重設密碼</h5>
+          <form action="#" method="post">
+            <div class="sectionHead">
+              <label for="passwordCheck">新密碼</label>
+              <input type="password" id="passwordCheck" name="password" placeholder="請輸入" class="loginType" />
+            </div>
+            <!-- <div class="sectionBody"> -->
+            <label for="passwordCheck1">請再次輸入新密碼</label>
+            <input type="password" id="passwordCheck1" name="password" placeholder="請輸入" class="loginType" />
+            <!-- </div> -->
+            <div class="submit">
+              <input type="button" class="btn_5" value="確認重設" @click="changePage(3)" />
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- index 3 忘記密碼/設定成功 -->
+      <div v-if="index === 3" class="loginPage succPag">
+        <div class="pageIsideContainer">
+          <img src="./images/icon/components-icon/success.svg" alt="" />
+          <h5 class="mb_24">密碼重設成功</h5>
+          <button type="button" class="btn_5" @click="changePage(0)">
+            確認
+          </button>
+        </div>
+      </div>
+
+      <!-- index 4 註冊會員 -->
+      <div v-if="index === 4" class="loginPage">
+        <div class="pageIsideContainer">
+          <h5>註冊會員</h5>
+
+          <form action="#" method="post">
+            <div class="sectionHead">
+              <label for="member_name">姓名</label>
+              <input type="text" id="member_name" name="member_name" placeholder="請輸入" class="loginType" />
+            </div>
+            <!-- <div class="sectionBody"> -->
+            <label for="user_mail">電子信箱</label>
+            <input type="email" id="user_mail" name="user_mail" placeholder="請輸入" class="loginType" />
+            <!-- </div> -->
+            <!-- <div class="sectionBody"> -->
+            <label for="new_password">使用者密碼</label>
+            <input type="password" id="new_password" name="new_password" placeholder="請輸入" class="loginType" />
+            <!-- </div> -->
+            <!-- <div class="sectionBody"> -->
+            <label for="new_passwordCheck">請再次輸入使用者密碼</label>
+            <input type="password" id="new_passwordCheck" name="new_passwordCheck" placeholder="請輸入"
+              class="loginType" />
+            <!-- </div> -->
+            <div class="submit">
+              <input type="button" class="btn_5" value="立即加入" @click="changePage(0)" />
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<script>
+  // const click_el = document.getElementById("btn_log");
+  // click_el.addEventListener('click', function () {
+  //   const ModalPage_el = document.getElementById("ModalPage");
+  //   ModalPage_el.classList.remove("login123");
+  //   vm.ispop = true;
+  //   vm.changePage(0);
+  // })
+
+  function removeLogin123Class() {
+    setTimeout(() => {
+      const modalPage = document.getElementById("ModalPage");
+      if (modalPage) {
+        modalPage.classList.remove("login123");
+      }
+    }, 10); // 10 毫秒后执行
+  }
+
+  // 调用函数
+  removeLogin123Class();
+
+
+
+  const ModalPage = Vue.createApp({
+    data() {
+      return {
+        text: "Hello World!",
+        returnStatus: "",
+        index: 0,
+        ispop: false,
+        account: "",
+        password: "",
+        success: false
+      };
+    },
+    methods: {
+      changePage(newIndex) {
+        this.index = newIndex;
+      },
+      handleSubmit() {
+        // 執行表單提交的處理
+        fetch("/php/login.php", {
+          method: "POST",
+          mode: "cors",
+          body: new URLSearchParams({
+            account: this.account,
+            password: this.password,
+          }),
+        })
+          .then((response) => response.json()) // 解析 JSON 回應
+          .then((data) => {
+            if (data.status === "success") {
+              // 如果回應為成功，執行頁面跳轉
+              window.open("member.html", "_self");
+            } else if (data.status === "error") {
+              // 如果回應為錯誤，處理無效認證的情況
+              console.log(data.message);
+            }
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      },
+    },
+  });
+
+  const vm = ModalPage.mount("#ModalPage");
+
+</script></li>
+    <li class="userIcon">
+      <svg
+        width="25"
+        height="25"
+        viewBox="0 0 67 68"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M33.5003 0.666748C15.1003 0.666748 0.166992 15.6001 0.166992 34.0001C0.166992 52.4001 15.1003 67.3334 33.5003 67.3334C51.9003 67.3334 66.8337 52.4001 66.8337 34.0001C66.8337 15.6001 51.9003 0.666748 33.5003 0.666748ZM33.5003 14.0001C39.9337 14.0001 45.167 19.2334 45.167 25.6667C45.167 32.1001 39.9337 37.3334 33.5003 37.3334C27.067 37.3334 21.8337 32.1001 21.8337 25.6667C21.8337 19.2334 27.067 14.0001 33.5003 14.0001ZM33.5003 60.6668C26.7337 60.6668 18.7337 57.9334 13.0337 51.0668C18.8723 46.4858 26.0791 43.9961 33.5003 43.9961C40.9216 43.9961 48.1283 46.4858 53.967 51.0668C48.267 57.9334 40.267 60.6668 33.5003 60.6668Z"
+          fill="#09003E"
+        />
+      </svg>
+    </li>
+    <li>
+      <div class="shopping-cart"><!-- 購物車彈跳窗 -->
+
+<!-- first list box2 -->
+<div class="ol-content">
+    <!-- box2-1 -->
+    <div class="ol-contentBox mb_24">
+      <div class="ol-ContText">
+        <div class="ol-title">
+            <h6>寵物接送</h6>
+            <img src="./images/icon/shop-icon/delete.svg" alt="">
+        </div>
+        <p style="color: #555;font-weight: normal; font-size: 14px;">8月17日 ｜ 16:00</p>
+        <div class="ol-info jcSb mb_16">
+          <p style="color: #555;font-weight: normal; font-size: 14px;">轎車</p>
+          <span style="font-size: normal; font-size: 14px;">NT$ 300</span>
+        </div>
+      </div>
+    </div>
+    <!-- box2-2 -->
+    <div class="ol-contentBox mb_24">
+      <div class="ol-ContText">
+        <div class="ol-title">
+            <h6>寵物接送</h6>
+            <img src="./images/icon/shop-icon/delete.svg" alt="">
+        </div>
+        <p style="color: #555;font-weight: normal; font-size: 14px;">8月17日-8月19日 (3晚)</p>
+        <div class="ol-info jcSb mb_16">
+          <p style="color: #555;font-weight: normal; font-size: 14px;">狗套房X1 ｜ 小型犬</p>
+          <span style="font-size: normal; font-size: 14px;">NT$ 2,400</span>
+        </div>
+      </div>
+    </div>
+    <!-- box2-3 -->
+    <div class="ol-contentBox mb_24">
+      <div class="ol-ContText">
+        <div class="ol-title">
+            <h6>快樂寵物旅館</h6>
+            <img src="./images/icon/shop-icon/delete.svg" alt="">
+        </div>
+        <p style="color: #555;font-weight: normal; font-size: 14px;">8月17日-8月19日 (3晚)</p>
+        <div class="ol-info jcSb mb_16">
+          <p style="color: #555;font-weight: normal; font-size: 14px;">貓套房X1 ｜ 貓咪</p>
+          <span style="font-size: normal; font-size: 14px;">NT$ 2,400</span>
+        </div>
+      </div>
+    </div>
+    <!-- checkout-note -->
+    <div class="checkout">
+        <div class="product-count">
+            <p style="color: #555; font-size: normal; font-size: 14px;">共3件商品</p>
+            <span style="font-size: 18px;">NT$ 5,100</span>
+        </div>
+        <button class="btn_4">查看購物車</button>
+    </div>
+  </div>
+
+</div>
+    </li>
+  </ul>
+
+  <!-- hamburger -->
+  <div class="hamburgerList col-10">
+    <a href="shopping.html">
+      <img src="./images/icon/header-icon/shoop.svg" alt="shopCar"
+    /></a>
+
+    <div class="l-header">
+      <div class="l-header__hambuger">
+        <div class="hambuger js-click">
+          <div class="hambuger__icon">
+            <div class="lines">
+              <div class="line line--top"></div>
+              <div class="line line--bottom"></div>
+            </div>
+          </div>
+
+          <div class="hambuger__body">
+            <div class="bg" id="hambugerBg"></div>
+            <div class="body" id="hambugerBody">
+              <ul class="menu-list">
+                <li class="item">
+                  <p class="title">
+                    <img
+                      src="./images/logo/PetpaGo-whiteLogo.svg"
+                      alt="logo"
+                      width="150px"
+                    />
+                    <!-- <span class="en">Top</span>
+                    <span class="ja">回首頁</span> -->
+                  </p>
+                  <a class="link" href="/"></a>
+                </li>
+
+                <li class="item">
+                  <p class="title">
+                    <span class="en">Go旅宿</span>
+                    <span class="ja">你出國 毛小孩也度假去</span>
+                  </p>
+                  <a class="link" href="hostel.html"></a>
+                </li>
+
+                <li class="item">
+                  <p class="title">
+                    <span class="en">Go司機</span>
+                    <span class="ja">無縫接送毛小孩</span>
+                  </p>
+                  <a class="link" href="driver.html"></a>
+                </li>
+
+                <li class="item">
+                  <p class="title">
+                    <span class="en">Go有料</span>
+                    <span class="ja">hiHi 我們一家毛</span>
+                  </p>
+                  <a class="link" href="photowall.html"></a>
+                </li>
+
+                <li class="item">
+                  <p class="title">
+                    <span class="en">會員中心</span>
+                    <span class="ja">累計點數 賺回饋goGo</span>
+                  </p>
+                  <a class="link" href="member.html"></a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.3/TweenMax.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mo-js/0.288.2/mo.min.js"></script>
+<script>
+  // rwd nav button
+  function navigateTo(url) {
+            window.location.href = url;
+        };
+  
+  class Hambuger {
+    constructor() {
+      window.pc = true;
+
+      let shapePhilosophy = new mojs.Shape({
+        parent: document.getElementById("hambugerBg"),
+        shape: "circle",
+        radius: window.pc ? 20 : 20,
+        // angle: 30,
+        fill: "#6e60f6",
+        opacity: 1,
+        isShowStart: true,
+      });
+
+      let hambugerIcon = document.getElementsByClassName("hambuger__icon")[0];
+      let lineTop = document.getElementsByClassName("line--top")[0];
+      let lineBottom = document.getElementsByClassName("line--bottom")[0];
+      let menuBody = document.getElementById("hambugerBody");
+      let items = menuBody.querySelectorAll(".item");
+
+      hambugerIcon.addEventListener("click", () => {
+        hambugerIcon.classList.toggle("is-open");
+        if (hambugerIcon.classList.contains("is-open")) {
+          shapePhilosophy.then({
+            scale: window.pc ? 80 : 40,
+            duration: 600,
+            // opacity: 1,
+            easing: "expo.out",
+          });
+          menuBody.style.display = "block";
+          TweenMax.staggerTo(
+            items,
+            0.3,
+            {
+              opacity: 1,
+              y: 0,
+              delay: 0.2,
+              ease: Power2.easeOut,
+            },
+            0.075
+          );
+          TweenMax.to(lineTop, 0.4, {
+            y: 2,
+            ease: Power4.easeOut,
+            onComplete: () => {
+              TweenMax.to(lineTop, 0.4, {
+                rotation: 45,
+                transformOrigin: "center center",
+                ease: Power4.easeOut,
+              });
+            },
+          });
+          TweenMax.to(lineBottom, 0.4, {
+            y: -2,
+            transformOrigin: "left top",
+            ease: Power4.easeOut,
+            onComplete: () => {
+              TweenMax.to(lineBottom, 0.4, {
+                rotation: -45,
+                transformOrigin: "center center",
+                ease: Power4.easeOut,
+              });
+            },
+          });
+          // 禁用捲軸
+          document.body.style.overflow = "hidden";
+        } else {
+          shapePhilosophy.then({
+            scale: 1,
+            duration: 400,
+            delay: 300,
+            easing: "expo.out",
+          });
+          TweenMax.staggerTo(
+            items,
+            0.2,
+            {
+              opacity: 0,
+              y: "20px",
+              onComplete: () => {
+                menuBody.style.display = "none";
+              },
+            },
+            0.01
+          );
+          TweenMax.to(lineTop, 0.4, {
+            rotation: 0,
+            transformOrigin: "center center",
+            ease: Power4.easeOut,
+            onComplete: () => {
+              TweenMax.to(lineTop, 0.4, {
+                y: 0,
+                ease: Power4.easeOut,
+              });
+            },
+          });
+          TweenMax.to(lineBottom, 0.4, {
+            rotation: 0,
+            transformOrigin: "center center",
+            ease: Power4.easeOut,
+            onComplete: () => {
+              TweenMax.to(lineBottom, 0.4, {
+                y: 0,
+                transformOrigin: "left top",
+                ease: Power4.easeOut,
+              });
+            },
+          });
+          // 啟用捲軸
+          document.body.style.overflow = "auto";
+        }
+        shapePhilosophy.play();
+      });
+    }
+  }
+
+  new Hambuger();
+</script>
+
+<script>
+  //滑鼠移到購物車上面的展示效果
+  document.addEventListener("DOMContentLoaded", () => {
+    const shoopElement = document.querySelector(".shoop");
+    const shoppingCartElement = document.querySelector(".shopping-cart");
+
+    shoopElement.addEventListener("mouseenter", () => {
+      shoppingCartElement.style.display = "block";
+    });
+
+    shoopElement.addEventListener("mouseleave", () => {
+      shoppingCartElement.style.display = "none";
+    });
+  });
+</script>
+
+      <picture>
+        <source
+          media="(max-width:414px )"
+          srcset="./images/banner/drive/m375-drive.svg"
+        />
+        <source
+          media="(max-width:768px )"
+          srcset="./images/banner/drive/m768-drive.svg"
+        />
+        <img src="./images/banner/drive/big_drive_banner.svg" alt="" />
+      </picture>
+
+      <main class="drive_container">
+        <div class="container">
+          <section class="titlesearchbar">
+  <div class="drivertitle">
+    <h2 class="mb_24">最安心的寵物接送</h2>
+  </div>
+  <div class="searchbar" id="driver_app">
+    <form action="driversecond.html" method="get">
+      <div class="upsection">
+        <div class="place">
+          <span>出發點</span>
+          <input
+            type="text"
+            placeholder="輸入上車地點"
+            v-model="msg_start"
+            name="start_place"
+          />
+        </div>
+
+        <img
+          src="./images/icon/drive-icon/change-bt.svg"
+          alt=""
+          @click="change"
+        />
+
+        <div class="place">
+          <span>目的地</span>
+          <input
+            type="text"
+            placeholder="輸入下車地點"
+            v-model="msg_end"
+            name="end_place"
+          />
+        </div>
+      </div>
+
+      <div class="downsection">
+        <div class="categorycontrol col-12">
+          <div class="category">
+            <span>乘車日期&時間</span>
+            <DatePicker
+              v-model="date"
+              :format="format"
+              calendar-cell-class-name="dp-custom-cell"
+              time-picker-inline
+              week-start="0"
+              :is-24="true"
+              :min-date="disabledDates"
+              :auto-position="false"
+              name="date-picker"
+              input-class="my-custom-datepicker-input"
+              :offset="15"
+            />
+          </div>
+          <div class="category categoryset">
+            <span>車種</span>
+            <input
+              type="button"
+              :value="car_menu"
+              @click="car_menu_open === true ? car_menu_open = false : car_menu_open = true"
+              name="car_type"
+            />
+            <div
+              class="category_kind"
+              :class="{'active':car_menu_open}"
+              ref="category_kind_active"
+            >
+              <div class="category_bottom">
+                <ul class="car">
+                  <li
+                    class="carList"
+                    v-for="item in cars"
+                    :key="item.id"
+                    @click="car_menu =  item.cars_type"
+                  >
+                    <input
+                      type="radio"
+                      v-model="car_menu"
+                      name="car-type"
+                      :value="item.cars_type"
+                    />
+                    <p ref="CAR">{{item.cars_type}}</p>
+                    <span>{{item.cars_text}}</span>
+                    <div
+                      class="check-box"
+                      :class="{'smooth':item.cars_type === car_menu}"
+                    ></div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="category">
+            <span>乘客數量</span>
+            <input
+              type="button"
+              @click="passenger_menu_open = !passenger_menu_open"
+              :value="show_passenger_quantity"
+              name="driver_quantity"
+            />
+
+            <div
+              class="driverStepper_wrapper"
+              :class="{'active':passenger_menu_open}"
+              ref="driverStepper_wrapper_active"
+            >
+              <div class="passenger_quantity">
+                <div class="driverStepper">
+                  <p>乘客</p>
+                  <div class="driver_Subtotal_icon_wrapper col-5">
+                    <input
+                      type="hidden"
+                      v-model="passenger_counter"
+                      name="passenger"
+                    />
+                    <!-- updateAmount、updateSubtotal:增減數量並更新小計 -->
+                    <div
+                      class="dirver_Subtotal_icon"
+                      @click="MinusOne('passenger_counter')"
+                    >
+                      <svg
+                        width="11"
+                        height="3"
+                        viewBox="0 0 11 3"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M10.3125 0.875H0.6875C0.441406 0.875 0.25 1.09375 0.25 1.3125V2.1875C0.25 2.43359 0.441406 2.625 0.6875 2.625H10.3125C10.5312 2.625 10.75 2.43359 10.75 2.1875V1.3125C10.75 1.09375 10.5312 0.875 10.3125 0.875Z"
+                          fill="#E6E6E6"
+                        />
+                      </svg>
+                    </div>
+                    <p>{{ passenger_counter }}</p>
+                    <div
+                      class="dirver_Subtotal_icon"
+                      @click="PlusOne('passenger_counter')"
+                    >
+                      <svg
+                        width="11"
+                        height="11"
+                        viewBox="0 0 11 11"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M10.3125 4.875H6.375V0.9375C6.375 0.71875 6.15625 0.5 5.9375 0.5H5.0625C4.81641 0.5 4.625 0.71875 4.625 0.9375V4.875H0.6875C0.441406 4.875 0.25 5.09375 0.25 5.3125V6.1875C0.25 6.43359 0.441406 6.625 0.6875 6.625H4.625V10.5625C4.625 10.8086 4.81641 11 5.0625 11H5.9375C6.15625 11 6.375 10.8086 6.375 10.5625V6.625H10.3125C10.5312 6.625 10.75 6.43359 10.75 6.1875V5.3125C10.75 5.09375 10.5312 4.875 10.3125 4.875Z"
+                          fill="#5E5E5E"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+                <div class="driverStepper">
+                  <p>毛孩</p>
+                  <div class="driver_Subtotal_icon_wrapper col-5">
+                    <input type="hidden" v-model="pet_counter" name="pet" />
+                    <!-- updateAmount、updateSubtotal:增減數量並更新小計 -->
+                    <div
+                      class="dirver_Subtotal_icon"
+                      @click="MinusOne('pet_counter')"
+                    >
+                      <svg
+                        width="11"
+                        height="3"
+                        viewBox="0 0 11 3"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M10.3125 0.875H0.6875C0.441406 0.875 0.25 1.09375 0.25 1.3125V2.1875C0.25 2.43359 0.441406 2.625 0.6875 2.625H10.3125C10.5312 2.625 10.75 2.43359 10.75 2.1875V1.3125C10.75 1.09375 10.5312 0.875 10.3125 0.875Z"
+                          fill="#E6E6E6"
+                        />
+                      </svg>
+                    </div>
+                    <p>{{ pet_counter }}</p>
+                    <div
+                      class="dirver_Subtotal_icon"
+                      @click="PlusOne('pet_counter')"
+                    >
+                      <svg
+                        width="11"
+                        height="11"
+                        viewBox="0 0 11 11"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M10.3125 4.875H6.375V0.9375C6.375 0.71875 6.15625 0.5 5.9375 0.5H5.0625C4.81641 0.5 4.625 0.71875 4.625 0.9375V4.875H0.6875C0.441406 4.875 0.25 5.09375 0.25 5.3125V6.1875C0.25 6.43359 0.441406 6.625 0.6875 6.625H4.625V10.5625C4.625 10.8086 4.81641 11 5.0625 11H5.9375C6.15625 11 6.375 10.8086 6.375 10.5625V6.625H10.3125C10.5312 6.625 10.75 6.43359 10.75 6.1875V5.3125C10.75 5.09375 10.5312 4.875 10.3125 4.875Z"
+                          fill="#5E5E5E"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button
+          type="submit"
+          class="driverbtn btn_7 col-2 col-lg-12"
+          id="driverbtn"
+        >
+          <p>立即搜尋</p>
+        </button>
+      </div>
+    </form>
+    <div class="remind">
+      <img
+        src="./images/icon/drive-icon/notes.svg"
+        alt=""
+        class="remindicon"
+      />
+      <p>
+        為提供舒適安全的乘車體驗，轎車最多可搭載乘客＋毛孩共三位、休旅車最多可搭載乘客＋毛孩共四位，請依實際需求選擇。
+      </p>
+    </div>
+  </div>
+</section>
+
+          <!-- <p>driver</p> -->
+          <section class="drivercards mb_100">
+            <div class="leftcard col-5">
+              <div class="filter">
+                <span>HOW TO BOOKING</span>
+              </div>
+            </div>
+            <div class="rightcard col-7 col-lg-12 col-sm-12">
+              <h4 class="mb_28">如何預約</h4>
+              <div class="card">
+                <ul>
+                  <li>
+                    <img
+                      src="./images/illustration/db-01.svg"
+                      alt=""
+                      class="mb_32 db"
+                    />
+                    <h6>輸入起訖點</h6>
+                    <p>
+                      讓司機準確地前往您的位置，並帶您和您的寵物安全抵達目的地。
+                    </p>
+                  </li>
+                  <li>
+                    <img
+                      src="./images/illustration/db-02.svg"
+                      alt=""
+                      class="mb_32 db"
+                    />
+                    <h6>選擇日期、時間、人數和寵物</h6>
+                    <p>
+                      我們建議至少提前3小時預約，以確保預約司機服務得到及時處理。
+                    </p>
+                  </li>
+                  <li>
+                    <img
+                      src="./images/illustration/db-03.svg"
+                      alt=""
+                      class="mb_32 db"
+                    />
+                    <h6>費用試算</h6>
+                    <p>
+                      完成選擇後，系統將預估車程費用試算。讓您提前了解預計的搭乘費用。
+                    </p>
+                  </li>
+                  <li>
+                    <img
+                      src="./images/illustration/db-04.svg"
+                      alt=""
+                      class="mb_32 db"
+                    />
+                    <h6>提交預約</h6>
+                    <p>確認行程，準備好與毛孩一起出發。</p>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </section>
+        </div>
+      </main>
+      <section class="ad_section mb_100">
+  <div class="ad_box container">
+    <div class="ad_box_icon col-12">
+      <img
+        src="./images/icon/components-icon/ad-icon/ad-Icon01.svg"
+        alt="add Member"
+      />
+      <div class="add_text">
+        <h6 class="noneOn768">立即加入會員，省越多、賺越多！</h6>
+        <h6 class="blockOn768">
+          立即加入會員，<br />
+          省越多、賺越多！
+        </h6>
+        <p>首次下單，即贈30 PetPoint點！</p>
+      </div>
+    </div>
+    <div class="ad_box_icon col-12">
+      <img
+        src="./images/icon/components-icon/ad-icon/ad-Icon02.svg"
+        alt="points"
+      />
+      <div class="add_text">
+        <h6>最多10% PetPoint點回饋</h6>
+        <p class="noneOn414">輕鬆賺積分、享折扣，下次預訂更划算！</p>
+        <p class="blockOn414">
+          輕鬆賺積分、享折扣，<br />
+          下次預訂更划算！
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+ <section>
+  <div class="ad_comm mb_100">
+    <div class="glide">
+      <!-- 頭 -->
+      <div class="top">
+        <h4>好評推薦</h4>
+        <div class="arrow_btn glide__arrows" data-glide-el="controls">
+          <div class="arrow glide__arrow glide__arrow--left" data-glide-dir="<">
+            <svg
+              width="26"
+              height="28"
+              viewBox="-1 -1 26 28"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M13 20.5972L5.70833 13.3055L13 6.01384"
+                stroke-width="4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </div>
+          <div
+            class="arrow glide__arrow glide__arrow--right"
+            data-glide-dir=">"
+          >
+            <svg
+              width="26"
+              height="28"
+              viewBox="2 0 26 28"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M13 7.40283L20.2917 14.6945L13 21.9862"
+                stroke-width="4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+      <!-- 底 -->
+      <div class="bottom glide__track" data-glide-el="track">
+        <ul class="glide__slides">
+          <li class="glide__slide">
+            <div class="ad_box">
+              <div class="comm_text">
+                <div class="star">
+                  <svg
+                    width="16"
+                    height="15"
+                    viewBox="0 0 16 15"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M8.67054 0.553168L10.1661 5.45517H15.0039C15.7833 5.45517 16.1074 6.44517 15.4766 6.90117L11.5621 9.38517L13.0577 13.9527C13.2996 14.6877 12.4491 15.2997 11.8183 14.8452L7.90535 12.0222L3.99086 14.8452C3.36005 15.2997 2.51265 14.6877 2.75296 13.9527L4.24698 9.38517L0.334074 6.90117C-0.298315 6.44517 0.0273651 5.45517 0.806784 5.45517H5.64456L7.14016 0.553168C7.18628 0.394195 7.28612 0.25398 7.42435 0.15405C7.56258 0.05412 7.73156 0 7.90535 0C8.07913 0 8.24812 0.05412 8.38635 0.15405C8.52458 0.25398 8.62442 0.394195 8.67054 0.553168Z"
+                    />
+                  </svg>
+                  <svg
+                    width="16"
+                    height="15"
+                    viewBox="0 0 16 15"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M8.67054 0.553168L10.1661 5.45517H15.0039C15.7833 5.45517 16.1074 6.44517 15.4766 6.90117L11.5621 9.38517L13.0577 13.9527C13.2996 14.6877 12.4491 15.2997 11.8183 14.8452L7.90535 12.0222L3.99086 14.8452C3.36005 15.2997 2.51265 14.6877 2.75296 13.9527L4.24698 9.38517L0.334074 6.90117C-0.298315 6.44517 0.0273651 5.45517 0.806784 5.45517H5.64456L7.14016 0.553168C7.18628 0.394195 7.28612 0.25398 7.42435 0.15405C7.56258 0.05412 7.73156 0 7.90535 0C8.07913 0 8.24812 0.05412 8.38635 0.15405C8.52458 0.25398 8.62442 0.394195 8.67054 0.553168Z"
+                    />
+                  </svg>
+                  <svg
+                    width="16"
+                    height="15"
+                    viewBox="0 0 16 15"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M8.67054 0.553168L10.1661 5.45517H15.0039C15.7833 5.45517 16.1074 6.44517 15.4766 6.90117L11.5621 9.38517L13.0577 13.9527C13.2996 14.6877 12.4491 15.2997 11.8183 14.8452L7.90535 12.0222L3.99086 14.8452C3.36005 15.2997 2.51265 14.6877 2.75296 13.9527L4.24698 9.38517L0.334074 6.90117C-0.298315 6.44517 0.0273651 5.45517 0.806784 5.45517H5.64456L7.14016 0.553168C7.18628 0.394195 7.28612 0.25398 7.42435 0.15405C7.56258 0.05412 7.73156 0 7.90535 0C8.07913 0 8.24812 0.05412 8.38635 0.15405C8.52458 0.25398 8.62442 0.394195 8.67054 0.553168Z"
+                    />
+                  </svg>
+                  <svg
+                    width="16"
+                    height="15"
+                    viewBox="0 0 16 15"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M8.67054 0.553168L10.1661 5.45517H15.0039C15.7833 5.45517 16.1074 6.44517 15.4766 6.90117L11.5621 9.38517L13.0577 13.9527C13.2996 14.6877 12.4491 15.2997 11.8183 14.8452L7.90535 12.0222L3.99086 14.8452C3.36005 15.2997 2.51265 14.6877 2.75296 13.9527L4.24698 9.38517L0.334074 6.90117C-0.298315 6.44517 0.0273651 5.45517 0.806784 5.45517H5.64456L7.14016 0.553168C7.18628 0.394195 7.28612 0.25398 7.42435 0.15405C7.56258 0.05412 7.73156 0 7.90535 0C8.07913 0 8.24812 0.05412 8.38635 0.15405C8.52458 0.25398 8.62442 0.394195 8.67054 0.553168Z"
+                    />
+                  </svg>
+                  <svg
+                    width="16"
+                    height="15"
+                    viewBox="0 0 16 15"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M8.67054 0.553168L10.1661 5.45517H15.0039C15.7833 5.45517 16.1074 6.44517 15.4766 6.90117L11.5621 9.38517L13.0577 13.9527C13.2996 14.6877 12.4491 15.2997 11.8183 14.8452L7.90535 12.0222L3.99086 14.8452C3.36005 15.2997 2.51265 14.6877 2.75296 13.9527L4.24698 9.38517L0.334074 6.90117C-0.298315 6.44517 0.0273651 5.45517 0.806784 5.45517H5.64456L7.14016 0.553168C7.18628 0.394195 7.28612 0.25398 7.42435 0.15405C7.56258 0.05412 7.73156 0 7.90535 0C8.07913 0 8.24812 0.05412 8.38635 0.15405C8.52458 0.25398 8.62442 0.394195 8.67054 0.553168Z"
+                    />
+                  </svg>
+                </div>
+                <p>
+                  車子備有寵物安全搭乘的設備，司機準時而且對動物很有愛心，停車總會確認我們家寶貝的狀態。
+                </p>
+              </div>
+              <div class="comm_user">
+                <img src="./images/pic/user1.png" alt="user" />
+                <div class="user_info">
+                  <p>常歡</p>
+                  <span>2023/07/24</span>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li class="glide__slide">
+            <div class="ad_box">
+              <div class="comm_text">
+                <div class="star">
+                  <svg
+                    width="16"
+                    height="15"
+                    viewBox="0 0 16 15"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M8.67054 0.553168L10.1661 5.45517H15.0039C15.7833 5.45517 16.1074 6.44517 15.4766 6.90117L11.5621 9.38517L13.0577 13.9527C13.2996 14.6877 12.4491 15.2997 11.8183 14.8452L7.90535 12.0222L3.99086 14.8452C3.36005 15.2997 2.51265 14.6877 2.75296 13.9527L4.24698 9.38517L0.334074 6.90117C-0.298315 6.44517 0.0273651 5.45517 0.806784 5.45517H5.64456L7.14016 0.553168C7.18628 0.394195 7.28612 0.25398 7.42435 0.15405C7.56258 0.05412 7.73156 0 7.90535 0C8.07913 0 8.24812 0.05412 8.38635 0.15405C8.52458 0.25398 8.62442 0.394195 8.67054 0.553168Z"
+                    />
+                  </svg>
+                  <svg
+                    width="16"
+                    height="15"
+                    viewBox="0 0 16 15"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M8.67054 0.553168L10.1661 5.45517H15.0039C15.7833 5.45517 16.1074 6.44517 15.4766 6.90117L11.5621 9.38517L13.0577 13.9527C13.2996 14.6877 12.4491 15.2997 11.8183 14.8452L7.90535 12.0222L3.99086 14.8452C3.36005 15.2997 2.51265 14.6877 2.75296 13.9527L4.24698 9.38517L0.334074 6.90117C-0.298315 6.44517 0.0273651 5.45517 0.806784 5.45517H5.64456L7.14016 0.553168C7.18628 0.394195 7.28612 0.25398 7.42435 0.15405C7.56258 0.05412 7.73156 0 7.90535 0C8.07913 0 8.24812 0.05412 8.38635 0.15405C8.52458 0.25398 8.62442 0.394195 8.67054 0.553168Z"
+                    />
+                  </svg>
+                  <svg
+                    width="16"
+                    height="15"
+                    viewBox="0 0 16 15"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M8.67054 0.553168L10.1661 5.45517H15.0039C15.7833 5.45517 16.1074 6.44517 15.4766 6.90117L11.5621 9.38517L13.0577 13.9527C13.2996 14.6877 12.4491 15.2997 11.8183 14.8452L7.90535 12.0222L3.99086 14.8452C3.36005 15.2997 2.51265 14.6877 2.75296 13.9527L4.24698 9.38517L0.334074 6.90117C-0.298315 6.44517 0.0273651 5.45517 0.806784 5.45517H5.64456L7.14016 0.553168C7.18628 0.394195 7.28612 0.25398 7.42435 0.15405C7.56258 0.05412 7.73156 0 7.90535 0C8.07913 0 8.24812 0.05412 8.38635 0.15405C8.52458 0.25398 8.62442 0.394195 8.67054 0.553168Z"
+                    />
+                  </svg>
+                  <svg
+                    width="16"
+                    height="15"
+                    viewBox="0 0 16 15"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M8.67054 0.553168L10.1661 5.45517H15.0039C15.7833 5.45517 16.1074 6.44517 15.4766 6.90117L11.5621 9.38517L13.0577 13.9527C13.2996 14.6877 12.4491 15.2997 11.8183 14.8452L7.90535 12.0222L3.99086 14.8452C3.36005 15.2997 2.51265 14.6877 2.75296 13.9527L4.24698 9.38517L0.334074 6.90117C-0.298315 6.44517 0.0273651 5.45517 0.806784 5.45517H5.64456L7.14016 0.553168C7.18628 0.394195 7.28612 0.25398 7.42435 0.15405C7.56258 0.05412 7.73156 0 7.90535 0C8.07913 0 8.24812 0.05412 8.38635 0.15405C8.52458 0.25398 8.62442 0.394195 8.67054 0.553168Z"
+                    />
+                  </svg>
+                  <svg
+                    width="16"
+                    height="15"
+                    viewBox="0 0 16 15"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M8.67054 0.553168L10.1661 5.45517H15.0039C15.7833 5.45517 16.1074 6.44517 15.4766 6.90117L11.5621 9.38517L13.0577 13.9527C13.2996 14.6877 12.4491 15.2997 11.8183 14.8452L7.90535 12.0222L3.99086 14.8452C3.36005 15.2997 2.51265 14.6877 2.75296 13.9527L4.24698 9.38517L0.334074 6.90117C-0.298315 6.44517 0.0273651 5.45517 0.806784 5.45517H5.64456L7.14016 0.553168C7.18628 0.394195 7.28612 0.25398 7.42435 0.15405C7.56258 0.05412 7.73156 0 7.90535 0C8.07913 0 8.24812 0.05412 8.38635 0.15405C8.52458 0.25398 8.62442 0.394195 8.67054 0.553168Z"
+                    />
+                  </svg>
+                </div>
+                <p>
+                  車子備有寵物安全搭乘的設備，司機準時而且對動物很有愛心，停車總會確認我們家寶貝的狀態。
+                </p>
+              </div>
+              <div class="comm_user">
+                <img src="./images/pic/user2.png" alt="user" />
+                <div class="user_info">
+                  <p>梁無雙</p>
+                  <span>2023/06/06</span>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li class="glide__slide">
+            <div class="ad_box">
+              <div class="comm_text">
+                <div class="star">
+                  <svg
+                    width="16"
+                    height="15"
+                    viewBox="0 0 16 15"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M8.67054 0.553168L10.1661 5.45517H15.0039C15.7833 5.45517 16.1074 6.44517 15.4766 6.90117L11.5621 9.38517L13.0577 13.9527C13.2996 14.6877 12.4491 15.2997 11.8183 14.8452L7.90535 12.0222L3.99086 14.8452C3.36005 15.2997 2.51265 14.6877 2.75296 13.9527L4.24698 9.38517L0.334074 6.90117C-0.298315 6.44517 0.0273651 5.45517 0.806784 5.45517H5.64456L7.14016 0.553168C7.18628 0.394195 7.28612 0.25398 7.42435 0.15405C7.56258 0.05412 7.73156 0 7.90535 0C8.07913 0 8.24812 0.05412 8.38635 0.15405C8.52458 0.25398 8.62442 0.394195 8.67054 0.553168Z"
+                    />
+                  </svg>
+                  <svg
+                    width="16"
+                    height="15"
+                    viewBox="0 0 16 15"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M8.67054 0.553168L10.1661 5.45517H15.0039C15.7833 5.45517 16.1074 6.44517 15.4766 6.90117L11.5621 9.38517L13.0577 13.9527C13.2996 14.6877 12.4491 15.2997 11.8183 14.8452L7.90535 12.0222L3.99086 14.8452C3.36005 15.2997 2.51265 14.6877 2.75296 13.9527L4.24698 9.38517L0.334074 6.90117C-0.298315 6.44517 0.0273651 5.45517 0.806784 5.45517H5.64456L7.14016 0.553168C7.18628 0.394195 7.28612 0.25398 7.42435 0.15405C7.56258 0.05412 7.73156 0 7.90535 0C8.07913 0 8.24812 0.05412 8.38635 0.15405C8.52458 0.25398 8.62442 0.394195 8.67054 0.553168Z"
+                    />
+                  </svg>
+                  <svg
+                    width="16"
+                    height="15"
+                    viewBox="0 0 16 15"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M8.67054 0.553168L10.1661 5.45517H15.0039C15.7833 5.45517 16.1074 6.44517 15.4766 6.90117L11.5621 9.38517L13.0577 13.9527C13.2996 14.6877 12.4491 15.2997 11.8183 14.8452L7.90535 12.0222L3.99086 14.8452C3.36005 15.2997 2.51265 14.6877 2.75296 13.9527L4.24698 9.38517L0.334074 6.90117C-0.298315 6.44517 0.0273651 5.45517 0.806784 5.45517H5.64456L7.14016 0.553168C7.18628 0.394195 7.28612 0.25398 7.42435 0.15405C7.56258 0.05412 7.73156 0 7.90535 0C8.07913 0 8.24812 0.05412 8.38635 0.15405C8.52458 0.25398 8.62442 0.394195 8.67054 0.553168Z"
+                    />
+                  </svg>
+                  <svg
+                    width="16"
+                    height="15"
+                    viewBox="0 0 16 15"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M8.67054 0.553168L10.1661 5.45517H15.0039C15.7833 5.45517 16.1074 6.44517 15.4766 6.90117L11.5621 9.38517L13.0577 13.9527C13.2996 14.6877 12.4491 15.2997 11.8183 14.8452L7.90535 12.0222L3.99086 14.8452C3.36005 15.2997 2.51265 14.6877 2.75296 13.9527L4.24698 9.38517L0.334074 6.90117C-0.298315 6.44517 0.0273651 5.45517 0.806784 5.45517H5.64456L7.14016 0.553168C7.18628 0.394195 7.28612 0.25398 7.42435 0.15405C7.56258 0.05412 7.73156 0 7.90535 0C8.07913 0 8.24812 0.05412 8.38635 0.15405C8.52458 0.25398 8.62442 0.394195 8.67054 0.553168Z"
+                    />
+                  </svg>
+                  <svg
+                    width="16"
+                    height="15"
+                    viewBox="0 0 16 15"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M8.67054 0.553168L10.1661 5.45517H15.0039C15.7833 5.45517 16.1074 6.44517 15.4766 6.90117L11.5621 9.38517L13.0577 13.9527C13.2996 14.6877 12.4491 15.2997 11.8183 14.8452L7.90535 12.0222L3.99086 14.8452C3.36005 15.2997 2.51265 14.6877 2.75296 13.9527L4.24698 9.38517L0.334074 6.90117C-0.298315 6.44517 0.0273651 5.45517 0.806784 5.45517H5.64456L7.14016 0.553168C7.18628 0.394195 7.28612 0.25398 7.42435 0.15405C7.56258 0.05412 7.73156 0 7.90535 0C8.07913 0 8.24812 0.05412 8.38635 0.15405C8.52458 0.25398 8.62442 0.394195 8.67054 0.553168Z"
+                    />
+                  </svg>
+                </div>
+                <p>
+                  車子備有寵物安全搭乘的設備，司機準時而且對動物很有愛心，停車總會確認我們家寶貝的狀態。
+                </p>
+              </div>
+              <div class="comm_user">
+                <img src="./images/pic/user3.png" alt="user" />
+                <div class="user_info">
+                  <p>何里玉</p>
+                  <span>2023/04/13</span>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li class="glide__slide">
+            <div class="ad_box">
+              <div class="comm_text">
+                <div class="star">
+                  <svg
+                    width="16"
+                    height="15"
+                    viewBox="0 0 16 15"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M8.67054 0.553168L10.1661 5.45517H15.0039C15.7833 5.45517 16.1074 6.44517 15.4766 6.90117L11.5621 9.38517L13.0577 13.9527C13.2996 14.6877 12.4491 15.2997 11.8183 14.8452L7.90535 12.0222L3.99086 14.8452C3.36005 15.2997 2.51265 14.6877 2.75296 13.9527L4.24698 9.38517L0.334074 6.90117C-0.298315 6.44517 0.0273651 5.45517 0.806784 5.45517H5.64456L7.14016 0.553168C7.18628 0.394195 7.28612 0.25398 7.42435 0.15405C7.56258 0.05412 7.73156 0 7.90535 0C8.07913 0 8.24812 0.05412 8.38635 0.15405C8.52458 0.25398 8.62442 0.394195 8.67054 0.553168Z"
+                    />
+                  </svg>
+                  <svg
+                    width="16"
+                    height="15"
+                    viewBox="0 0 16 15"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M8.67054 0.553168L10.1661 5.45517H15.0039C15.7833 5.45517 16.1074 6.44517 15.4766 6.90117L11.5621 9.38517L13.0577 13.9527C13.2996 14.6877 12.4491 15.2997 11.8183 14.8452L7.90535 12.0222L3.99086 14.8452C3.36005 15.2997 2.51265 14.6877 2.75296 13.9527L4.24698 9.38517L0.334074 6.90117C-0.298315 6.44517 0.0273651 5.45517 0.806784 5.45517H5.64456L7.14016 0.553168C7.18628 0.394195 7.28612 0.25398 7.42435 0.15405C7.56258 0.05412 7.73156 0 7.90535 0C8.07913 0 8.24812 0.05412 8.38635 0.15405C8.52458 0.25398 8.62442 0.394195 8.67054 0.553168Z"
+                    />
+                  </svg>
+                  <svg
+                    width="16"
+                    height="15"
+                    viewBox="0 0 16 15"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M8.67054 0.553168L10.1661 5.45517H15.0039C15.7833 5.45517 16.1074 6.44517 15.4766 6.90117L11.5621 9.38517L13.0577 13.9527C13.2996 14.6877 12.4491 15.2997 11.8183 14.8452L7.90535 12.0222L3.99086 14.8452C3.36005 15.2997 2.51265 14.6877 2.75296 13.9527L4.24698 9.38517L0.334074 6.90117C-0.298315 6.44517 0.0273651 5.45517 0.806784 5.45517H5.64456L7.14016 0.553168C7.18628 0.394195 7.28612 0.25398 7.42435 0.15405C7.56258 0.05412 7.73156 0 7.90535 0C8.07913 0 8.24812 0.05412 8.38635 0.15405C8.52458 0.25398 8.62442 0.394195 8.67054 0.553168Z"
+                    />
+                  </svg>
+                  <svg
+                    width="16"
+                    height="15"
+                    viewBox="0 0 16 15"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M8.67054 0.553168L10.1661 5.45517H15.0039C15.7833 5.45517 16.1074 6.44517 15.4766 6.90117L11.5621 9.38517L13.0577 13.9527C13.2996 14.6877 12.4491 15.2997 11.8183 14.8452L7.90535 12.0222L3.99086 14.8452C3.36005 15.2997 2.51265 14.6877 2.75296 13.9527L4.24698 9.38517L0.334074 6.90117C-0.298315 6.44517 0.0273651 5.45517 0.806784 5.45517H5.64456L7.14016 0.553168C7.18628 0.394195 7.28612 0.25398 7.42435 0.15405C7.56258 0.05412 7.73156 0 7.90535 0C8.07913 0 8.24812 0.05412 8.38635 0.15405C8.52458 0.25398 8.62442 0.394195 8.67054 0.553168Z"
+                    />
+                  </svg>
+                  <svg
+                    width="16"
+                    height="15"
+                    viewBox="0 0 16 15"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M8.67054 0.553168L10.1661 5.45517H15.0039C15.7833 5.45517 16.1074 6.44517 15.4766 6.90117L11.5621 9.38517L13.0577 13.9527C13.2996 14.6877 12.4491 15.2997 11.8183 14.8452L7.90535 12.0222L3.99086 14.8452C3.36005 15.2997 2.51265 14.6877 2.75296 13.9527L4.24698 9.38517L0.334074 6.90117C-0.298315 6.44517 0.0273651 5.45517 0.806784 5.45517H5.64456L7.14016 0.553168C7.18628 0.394195 7.28612 0.25398 7.42435 0.15405C7.56258 0.05412 7.73156 0 7.90535 0C8.07913 0 8.24812 0.05412 8.38635 0.15405C8.52458 0.25398 8.62442 0.394195 8.67054 0.553168Z"
+                    />
+                  </svg>
+                </div>
+                <p>
+                  車子備有寵物安全搭乘的設備，司機準時而且對動物很有愛心，停車總會確認我們家寶貝的狀態。
+                </p>
+              </div>
+              <div class="comm_user">
+                <img src="./images/pic/user4.png" alt="user" />
+                <div class="user_info">
+                  <p>常滿</p>
+                  <span>2023/03/28</span>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li class="glide__slide">
+            <div class="ad_box">
+              <div class="comm_text">
+                <div class="star">
+                  <svg
+                    width="16"
+                    height="15"
+                    viewBox="0 0 16 15"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M8.67054 0.553168L10.1661 5.45517H15.0039C15.7833 5.45517 16.1074 6.44517 15.4766 6.90117L11.5621 9.38517L13.0577 13.9527C13.2996 14.6877 12.4491 15.2997 11.8183 14.8452L7.90535 12.0222L3.99086 14.8452C3.36005 15.2997 2.51265 14.6877 2.75296 13.9527L4.24698 9.38517L0.334074 6.90117C-0.298315 6.44517 0.0273651 5.45517 0.806784 5.45517H5.64456L7.14016 0.553168C7.18628 0.394195 7.28612 0.25398 7.42435 0.15405C7.56258 0.05412 7.73156 0 7.90535 0C8.07913 0 8.24812 0.05412 8.38635 0.15405C8.52458 0.25398 8.62442 0.394195 8.67054 0.553168Z"
+                    />
+                  </svg>
+                  <svg
+                    width="16"
+                    height="15"
+                    viewBox="0 0 16 15"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M8.67054 0.553168L10.1661 5.45517H15.0039C15.7833 5.45517 16.1074 6.44517 15.4766 6.90117L11.5621 9.38517L13.0577 13.9527C13.2996 14.6877 12.4491 15.2997 11.8183 14.8452L7.90535 12.0222L3.99086 14.8452C3.36005 15.2997 2.51265 14.6877 2.75296 13.9527L4.24698 9.38517L0.334074 6.90117C-0.298315 6.44517 0.0273651 5.45517 0.806784 5.45517H5.64456L7.14016 0.553168C7.18628 0.394195 7.28612 0.25398 7.42435 0.15405C7.56258 0.05412 7.73156 0 7.90535 0C8.07913 0 8.24812 0.05412 8.38635 0.15405C8.52458 0.25398 8.62442 0.394195 8.67054 0.553168Z"
+                    />
+                  </svg>
+                  <svg
+                    width="16"
+                    height="15"
+                    viewBox="0 0 16 15"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M8.67054 0.553168L10.1661 5.45517H15.0039C15.7833 5.45517 16.1074 6.44517 15.4766 6.90117L11.5621 9.38517L13.0577 13.9527C13.2996 14.6877 12.4491 15.2997 11.8183 14.8452L7.90535 12.0222L3.99086 14.8452C3.36005 15.2997 2.51265 14.6877 2.75296 13.9527L4.24698 9.38517L0.334074 6.90117C-0.298315 6.44517 0.0273651 5.45517 0.806784 5.45517H5.64456L7.14016 0.553168C7.18628 0.394195 7.28612 0.25398 7.42435 0.15405C7.56258 0.05412 7.73156 0 7.90535 0C8.07913 0 8.24812 0.05412 8.38635 0.15405C8.52458 0.25398 8.62442 0.394195 8.67054 0.553168Z"
+                    />
+                  </svg>
+                  <svg
+                    width="16"
+                    height="15"
+                    viewBox="0 0 16 15"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M8.67054 0.553168L10.1661 5.45517H15.0039C15.7833 5.45517 16.1074 6.44517 15.4766 6.90117L11.5621 9.38517L13.0577 13.9527C13.2996 14.6877 12.4491 15.2997 11.8183 14.8452L7.90535 12.0222L3.99086 14.8452C3.36005 15.2997 2.51265 14.6877 2.75296 13.9527L4.24698 9.38517L0.334074 6.90117C-0.298315 6.44517 0.0273651 5.45517 0.806784 5.45517H5.64456L7.14016 0.553168C7.18628 0.394195 7.28612 0.25398 7.42435 0.15405C7.56258 0.05412 7.73156 0 7.90535 0C8.07913 0 8.24812 0.05412 8.38635 0.15405C8.52458 0.25398 8.62442 0.394195 8.67054 0.553168Z"
+                    />
+                  </svg>
+                  <svg
+                    width="16"
+                    height="15"
+                    viewBox="0 0 16 15"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M8.67054 0.553168L10.1661 5.45517H15.0039C15.7833 5.45517 16.1074 6.44517 15.4766 6.90117L11.5621 9.38517L13.0577 13.9527C13.2996 14.6877 12.4491 15.2997 11.8183 14.8452L7.90535 12.0222L3.99086 14.8452C3.36005 15.2997 2.51265 14.6877 2.75296 13.9527L4.24698 9.38517L0.334074 6.90117C-0.298315 6.44517 0.0273651 5.45517 0.806784 5.45517H5.64456L7.14016 0.553168C7.18628 0.394195 7.28612 0.25398 7.42435 0.15405C7.56258 0.05412 7.73156 0 7.90535 0C8.07913 0 8.24812 0.05412 8.38635 0.15405C8.52458 0.25398 8.62442 0.394195 8.67054 0.553168Z"
+                    />
+                  </svg>
+                </div>
+                <p>
+                  車子備有寵物安全搭乘的設備，司機準時而且對動物很有愛心，停車總會確認我們家寶貝的狀態。
+                </p>
+              </div>
+              <div class="comm_user">
+                <img src="./images/pic/user5.png" alt="user" />
+                <div class="user_info">
+                  <p>家明</p>
+                  <span>2023/03/25</span>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li class="glide__slide">
+            <div class="ad_box">
+              <div class="comm_text">
+                <div class="star">
+                  <svg
+                    width="16"
+                    height="15"
+                    viewBox="0 0 16 15"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M8.67054 0.553168L10.1661 5.45517H15.0039C15.7833 5.45517 16.1074 6.44517 15.4766 6.90117L11.5621 9.38517L13.0577 13.9527C13.2996 14.6877 12.4491 15.2997 11.8183 14.8452L7.90535 12.0222L3.99086 14.8452C3.36005 15.2997 2.51265 14.6877 2.75296 13.9527L4.24698 9.38517L0.334074 6.90117C-0.298315 6.44517 0.0273651 5.45517 0.806784 5.45517H5.64456L7.14016 0.553168C7.18628 0.394195 7.28612 0.25398 7.42435 0.15405C7.56258 0.05412 7.73156 0 7.90535 0C8.07913 0 8.24812 0.05412 8.38635 0.15405C8.52458 0.25398 8.62442 0.394195 8.67054 0.553168Z"
+                    />
+                  </svg>
+                  <svg
+                    width="16"
+                    height="15"
+                    viewBox="0 0 16 15"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M8.67054 0.553168L10.1661 5.45517H15.0039C15.7833 5.45517 16.1074 6.44517 15.4766 6.90117L11.5621 9.38517L13.0577 13.9527C13.2996 14.6877 12.4491 15.2997 11.8183 14.8452L7.90535 12.0222L3.99086 14.8452C3.36005 15.2997 2.51265 14.6877 2.75296 13.9527L4.24698 9.38517L0.334074 6.90117C-0.298315 6.44517 0.0273651 5.45517 0.806784 5.45517H5.64456L7.14016 0.553168C7.18628 0.394195 7.28612 0.25398 7.42435 0.15405C7.56258 0.05412 7.73156 0 7.90535 0C8.07913 0 8.24812 0.05412 8.38635 0.15405C8.52458 0.25398 8.62442 0.394195 8.67054 0.553168Z"
+                    />
+                  </svg>
+                  <svg
+                    width="16"
+                    height="15"
+                    viewBox="0 0 16 15"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M8.67054 0.553168L10.1661 5.45517H15.0039C15.7833 5.45517 16.1074 6.44517 15.4766 6.90117L11.5621 9.38517L13.0577 13.9527C13.2996 14.6877 12.4491 15.2997 11.8183 14.8452L7.90535 12.0222L3.99086 14.8452C3.36005 15.2997 2.51265 14.6877 2.75296 13.9527L4.24698 9.38517L0.334074 6.90117C-0.298315 6.44517 0.0273651 5.45517 0.806784 5.45517H5.64456L7.14016 0.553168C7.18628 0.394195 7.28612 0.25398 7.42435 0.15405C7.56258 0.05412 7.73156 0 7.90535 0C8.07913 0 8.24812 0.05412 8.38635 0.15405C8.52458 0.25398 8.62442 0.394195 8.67054 0.553168Z"
+                    />
+                  </svg>
+                  <svg
+                    width="16"
+                    height="15"
+                    viewBox="0 0 16 15"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M8.67054 0.553168L10.1661 5.45517H15.0039C15.7833 5.45517 16.1074 6.44517 15.4766 6.90117L11.5621 9.38517L13.0577 13.9527C13.2996 14.6877 12.4491 15.2997 11.8183 14.8452L7.90535 12.0222L3.99086 14.8452C3.36005 15.2997 2.51265 14.6877 2.75296 13.9527L4.24698 9.38517L0.334074 6.90117C-0.298315 6.44517 0.0273651 5.45517 0.806784 5.45517H5.64456L7.14016 0.553168C7.18628 0.394195 7.28612 0.25398 7.42435 0.15405C7.56258 0.05412 7.73156 0 7.90535 0C8.07913 0 8.24812 0.05412 8.38635 0.15405C8.52458 0.25398 8.62442 0.394195 8.67054 0.553168Z"
+                    />
+                  </svg>
+                  <svg
+                    width="16"
+                    height="15"
+                    viewBox="0 0 16 15"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M8.67054 0.553168L10.1661 5.45517H15.0039C15.7833 5.45517 16.1074 6.44517 15.4766 6.90117L11.5621 9.38517L13.0577 13.9527C13.2996 14.6877 12.4491 15.2997 11.8183 14.8452L7.90535 12.0222L3.99086 14.8452C3.36005 15.2997 2.51265 14.6877 2.75296 13.9527L4.24698 9.38517L0.334074 6.90117C-0.298315 6.44517 0.0273651 5.45517 0.806784 5.45517H5.64456L7.14016 0.553168C7.18628 0.394195 7.28612 0.25398 7.42435 0.15405C7.56258 0.05412 7.73156 0 7.90535 0C8.07913 0 8.24812 0.05412 8.38635 0.15405C8.52458 0.25398 8.62442 0.394195 8.67054 0.553168Z"
+                    />
+                  </svg>
+                </div>
+                <p>
+                  車子備有寵物安全搭乘的設備，司機準時而且對動物很有愛心，停車總會確認我們家寶貝的狀態。
+                </p>
+              </div>
+              <div class="comm_user">
+                <img src="./images/pic/user6.png" alt="user" />
+                <div class="user_info">
+                  <p>婉君</p>
+                  <span>2023/01/18</span>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/@glidejs/glide"></script>
+<script>
+  const config = {
+    type: "carousel",
+    startAt: 0,
+    focusAt: "center",
+    perView: 3,
+    gap: 32,
+    autoplay: 5000,
+    breakpoints: {
+      1200: {
+        perView: 3,
+      },
+      820: {
+        perView: 2,
+      },
+      768: {
+        perView: 2,
+      },
+      434: {
+        perView: 1,
+      },
+    },
+  };
+
+  new Glide(".glide", config).mount();
+</script>
+
+      <section>
+  <div class="dh_FAQ container">
+    <div>
+      <img src="./images/illustration/FAQ_cat.png" alt="cat" />
+    </div>
+
+    <div class="accordion mb_100 col-8 col-sm-12">
+      <div class="accordion_header">
+        <h4>常見問題</h4>
+        <a href="faq.html"
+          >查看更多
+          <svg
+            width="22"
+            height="22"
+            viewBox="0 1 26 28"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M13 7.40283L20.2917 14.6945L13 21.9862"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </a>
+      </div>
+      <div class="accordion-item">
+        <button id="accordion-button-1" aria-expanded="false">
+          <span class="accordion-title">攜帶毛孩乘搭毛孩優步注意事項</span>
+          <img
+            class="icon"
+            aria-hidden="true"
+            src="./images/icon/components-icon/faqbt-circle.svg"
+            alt="btn"
+          />
+        </button>
+        <div class="accordion-content">
+          <p>
+            對於貓狗，我們鼓勵乘客在行程中使用牽繩、胸帶或手提籠，而其他動物則必須放在封閉式寵物袋或寵物籠內。經職業駕駛同意後，你才能於行程中將寵物解開相關控管措施。
+          </p>
+          <p>
+            若你攜帶具攻擊性或有攻擊紀錄之寵物，請務必採取必要防護措施，包括以長度不超過一點五公尺之繩或鍊牽引及配戴不影響散熱之透氣口罩等適當防護措施。
+          </p>
+          <p>
+            為協助職業駕駛保持車輛整潔，我們建議乘客自備毛巾，以保護車內座椅。
+          </p>
+          <p>詢問職業駕駛有否於車內設置毛孩指定座位。</p>
+          <p>
+            你務必於行程中全程妥善控管自己的毛孩。如因寵物未受妥善控制而產生意外，你可能需就意外造成的損失負責。
+          </p>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <button id="accordion-button-2" aria-expanded="false">
+          <span class="accordion-title">攜同法定輔助類動物</span>
+          <img
+            class="icon"
+            aria-hidden="true"
+            src="./images/icon/components-icon/faqbt-circle.svg"
+            alt="btn"
+          />
+        </button>
+        <div class="accordion-content">
+          <p>
+            法定輔助類動物（如導盲犬）得搭乘所有大眾運輸工具。請注意，攜帶法定輔助類動物（如導盲犬、導聾犬、肢體輔助犬）的乘客無需特別選擇毛孩優步即可使用
+            Uber 網際網路系統預定行程。
+          </p>
+          <p>
+            Uber
+            與合作車隊致力為身心障礙人士提供更多便利的交通選擇。為了讓你和你的法定輔助類動物享用更好的搭乘體驗，我們也建議你可以預約「關懷優步」行程，「關懷優步」的職業駕駛已為接載你和你的法定輔助類動物做好準備。
+          </p>
+          <p>
+            我們也鼓勵乘客在預約行程後與職業駕駛聯絡，告知他們你將帶同法定輔助類動物搭乘。
+          </p>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <button id="accordion-button-3" aria-expanded="false">
+          <span class="accordion-title"
+            >可以攜帶多少隻毛孩搭乘毛孩優步行程？</span
+          >
+          <img
+            class="icon"
+            aria-hidden="true"
+            src="./images/icon/components-icon/faqbt-circle.svg"
+            alt="btn"
+          />
+        </button>
+        <div class="accordion-content">
+          <p>
+            每趟毛孩優步行程上限搭載二隻毛孩。如果你欲預約二隻以上毛孩行程，請務必事先與職業駕駛聯絡，職業駕駛可自行決定是否接受行程。
+          </p>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <button id="accordion-button-4" aria-expanded="false">
+          <span class="accordion-title">我可以攜帶什麼種類的動物？</span>
+          <img
+            class="icon"
+            aria-hidden="true"
+            src="./images/icon/components-icon/faqbt-circle.svg"
+            alt="btn"
+          />
+        </button>
+        <div class="accordion-content">
+          <p>
+            毛孩的定義廣泛，品種大小各有不同，而毛孩優步主要為家庭寵物（如：貓狗）而設。請切記，你在行程期間須為管理毛孩負上全部責任。
+            職業駕駛有權自行決定是否搭載貓狗以外的動物，亦有權拒絕搭載他們認為不安全或不受控制的毛孩。
+          </p>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <button id="accordion-button-5" aria-expanded="false">
+          <span class="accordion-title">我不可以攜帶什麼種類的動物？</span>
+          <img
+            class="icon"
+            aria-hidden="true"
+            src="./images/icon/components-icon/faqbt-circle.svg"
+            alt="btn"
+          />
+        </button>
+        <div class="accordion-content">
+          <p>
+            保育類動物或其他經政府指定公告之動物（如：比特犬、日本土佐犬、紐波利頓犬、阿根廷杜告犬、巴西菲勒犬、獒犬及其混血之犬隻），因涉及相關違禁法令而無法攜帶。
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  const items = document.querySelectorAll(".accordion button");
+
+  function toggleAccordion() {
+    const itemToggle = this.getAttribute("aria-expanded");
+
+    for (i = 0; i < items.length; i++) {
+      items[i].setAttribute("aria-expanded", "false");
+    }
+
+    if (itemToggle == "false") {
+      this.setAttribute("aria-expanded", "true");
+    }
+  }
+
+  items.forEach((item) => item.addEventListener("click", toggleAccordion));
+
+  // 預設展開第一個手風琴區塊
+  const firstAccordionButton = document.querySelector(".accordion button");
+  firstAccordionButton.setAttribute("aria-expanded", "true");
+</script>
+ <footer>
+  <div class="footer_container">
+    <div class="f_box">
+      <img src="./images/logo/PetpaGo-whiteLogo.svg" alt="PetpaGo" />
+      <ul>
+        <li><a href="about.html">關於我們</a></li>
+        <li><a href="faq.html">常見問題</a></li>
+        <li><a href="#">廣告服務</a></li>
+        <li><a href="#">與我們聯絡</a></li>
+      </ul>
+    </div>
+    <div class="f_box">
+      <p>
+        本網站為緯育TibaMe【第85期】前端工程師專業技術養成班學員作品，僅供學習、展示之用途。
+      </p>
+      <ul>
+        <li>
+          <img src="./images/icon/footer-icon/Facebook.svg" alt="Facebook" />
+        </li>
+        <li>
+          <img src="./images/icon/footer-icon/Twitter.svg" alt="Twitter" />
+        </li>
+        <li>
+          <img src="./images/icon/footer-icon/Instagram.svg" alt="Instagram" />
+        </li>
+      </ul>
+    </div>
+    <div class="f_box boxLine">
+      <p>©2023 PetpaGO Inc. All rights reserved.</p>
+      <ul>
+        <li><a href="#">服務聲明</a></li>
+        <li><a href="#">隱私權聲明</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+    </div>
+
+    <script src="./js/vue-datepicker.iife.js"></script>
+    <script>
+      // import DriverSelector from "./js/components/DriverSelector.js";
+      // console.log(window.VueUse);
+      const app = Vue.createApp({
+        data() {
+          return {
+            date: "",
+            format: `MM月 dd日 ｜HH ：mm`,
+            msg_start: "",
+            msg_end: "",
+            passenger_counter: 1,
+            pet_counter: 1,
+            car_menu: "轎車",
+            car_menu_open: false,
+            passenger_menu_open: false,
+            passenger: "乘客",
+            pet: "寵物",
+            cars: [
+              {
+                id: "a",
+                cars_type: "轎車",
+                cars_text: "乘客＋毛孩最多3位",
+              },
+              {
+                id: "b",
+                cars_type: "休旅車",
+                cars_text: "乘客＋毛孩最多4位",
+              },
+            ],
+          };
+        },
+        computed: {
+          disabledDates() {
+            let today = new Date();
+            let disabledtoday = new Date(today);
+            disabledtoday.setDate(disabledtoday.getDate() + 1);
+
+            return disabledtoday;
+          },
+          show_passenger_quantity() {
+            return `${this.passenger_counter} 位乘客，${this.pet_counter} 位毛孩`;
+          },
+        },
+        methods: {
+          change() {
+            let msg_start = this.msg_start;
+            let msg_end = this.msg_end;
+            this.msg_start = msg_end;
+            this.msg_end = msg_start;
+          },
+          PlusOne(counter_name) {
+            if (this.car_menu === "轎車") {
+              if (this.passenger_counter + this.pet_counter < 3) {
+                this[counter_name]++;
+              }
+            }
+            if (this.car_menu === "休旅車") {
+              if (this.passenger_counter + this.pet_counter < 4) {
+                this[counter_name]++;
+              }
+            }
+          },
+          MinusOne(counter_name) {
+            if (this[counter_name] <= 0) {
+              this[counter_name] = 0;
+            } else {
+              this[counter_name]--;
+            }
+          },
+        },
+        mounted() {
+          const startDate = new Date();
+          // const endDate = new Date(new Date().setDate(startDate.getDate() + 7));
+          // this.date = [startDate, endDate];
+          this.date = startDate;
+          // this.date = [startDate];
+
+          // const firstItem = document.querySelector(".carList");
+          // const firstItemDiv = firstItem.querySelector("div");
+          // firstItemDiv.classList.add("smooth");
+          // this.car_menu = firstItem.querySelector("p").innerText;
+        },
+      });
+      app.component("Datepicker", VueDatePicker);
+      // app.component("DriverSelector", DriverSelector);
+      app.mount("#driver_app");
+    </script>
+  </body>
+</html>

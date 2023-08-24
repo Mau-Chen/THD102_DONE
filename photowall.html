@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <link href="./images/pgo.ico" rel="icon" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Abel&family=Noto+Sans+TC:wght@100;200;300;400;500;600;700;800;900&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
+  rel="stylesheet"
+/>
+
+  <link rel="stylesheet" href="./css/style.css" />
+  <title>GO有料 | PetpaGo</title>
+</head>
+
+<body>
+  <div class="wrapper photowall">
+    <header>
+  <a href="index.html">
+    <img src="./images/logo/PetpaGo-logo.svg" alt="PetpaGo logo" />
+  </a>
+  <ul class="navList col-10">
+    <li class="nav_item" data-content="GO旅宿" onclick="navigateTo('hostel.html')">
+      <a href="hostel.html">GO旅宿</a>
+    </li>
+    <li class="nav_item" data-content="GO司機" onclick="navigateTo('driver.html')">
+      <a href="driver.html">GO司機</a>
+    </li>
+    <li class="nav_item" data-content="GO有料" onclick="navigateTo('photowall.html')">
+      <a href="photowall.html">GO有料</a>
+    </li>
+    <li class="shoop">
+      <a href="shopping.html">
+        <img src="./images/icon/header-icon/shoop.svg" alt="shopCar"
+      /></a>
+    </li>
+    <li><!-- #ModalPage為Vue掛載的位置，不管用什麼裝置觸發，都必須要有這個ID -->
+<!-- <div type="button" id="btn_log" class="btn_4">
+  登入
+</div> -->
+
+<div id="ModalPage" class="login123">
+  <!-- 此處為用@click綁定事件，用data中的"ispop"資料，來控制燈箱跳出
+        如果要綁定在其它物件上，只要打上@click這條即可觸發。 -->
+  <div type="button" @click="ispop = true; changePage(0)" class="btn_4" v-show="success === false">
+    登入
+  </div>
+  <div v-show="success === true">
+    <a href="../member.html">
+      <svg width="25" height="25" viewBox="0 0 67 68" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M33.5003 0.666748C15.1003 0.666748 0.166992 15.6001 0.166992 34.0001C0.166992 52.4001 15.1003 67.3334 33.5003 67.3334C51.9003 67.3334 66.8337 52.4001 66.8337 34.0001C66.8337 15.6001 51.9003 0.666748 33.5003 0.666748ZM33.5003 14.0001C39.9337 14.0001 45.167 19.2334 45.167 25.6667C45.167 32.1001 39.9337 37.3334 33.5003 37.3334C27.067 37.3334 21.8337 32.1001 21.8337 25.6667C21.8337 19.2334 27.067 14.0001 33.5003 14.0001ZM33.5003 60.6668C26.7337 60.6668 18.7337 57.9334 13.0337 51.0668C18.8723 46.4858 26.0791 43.9961 33.5003 43.9961C40.9216 43.9961 48.1283 46.4858 53.967 51.0668C48.267 57.9334 40.267 60.6668 33.5003 60.6668Z"
+          fill="#09003E" />
+      </svg>
+    </a>
+
+  </div>
+  <!-- 用v-if來渲染出燈箱畫面，此處的v-if渲染內容為燈箱主體，不可更動。 -->
+  <div v-if="ispop === true" class="lightbox" @click="ispop = false">
+    <!-- loginpage_base為燈箱主版面，未RWD前寬度已經寫死為500px。 -->
+    <div class="loginpage_base" @click.stop>
+      <!-- close中存在關閉燈箱渲染的控件，為燈箱主體，不可更改 -->
+      <div class="close">
+        <div class="icon" @click="ispop = false">
+          <img src="./images/icon/components-icon/close-line.svg" alt="close" />
+        </div>
+      </div>
+      <!-- 此處為燈箱切換頁面的主體，用v-if渲染出不同的內文，用data:index來控制要渲染的頁面。
+                    同一class但不同 index的div 即為不同的頁面，所有要開發的頁面，都要放在同一層級。 -->
+
+      <!-- index 0 登入頁面 -->
+      <div v-if="index === 0" class="loginPage">
+        <div class="pageIsideContainer">
+          <h5>登入/註冊</h5>
+          <!-- 此處綁定了自行寫入的post事件 -->
+          <form @submit.prevent="handleSubmit">
+            <!-- sectionHead本身不包含任何屬性，為了要完全貼齊form的上轅。 -->
+            <div class="sectionHead">
+              <label for="account">帳號</label>
+              <input type="email" id="account" name="account" placeholder="請輸入E-MAIL" class="loginType"
+                v-model="account" />
+            </div>
+            <!-- sectionBody包含了向上與向下的間距，要調整的方向在這裡。 -->
+            <!-- <div class="sectionBody"> -->
+            <label for="password">密碼</label>
+            <input type="password" id="password" name="password" placeholder="請輸入密碼" class="loginType noMb24"
+              v-model="password" />
+            <a class="mb_24" @click="changePage(1)">忘記密碼?</a>
+            <!-- </div> -->
+            <div class="submit">
+              <input type="button" class="btn_5" value="登入" @click="ispop = false, success = true" />
+            </div>
+          </form>
+          <div class="register">
+            <p>還沒成為PetpaGo會員?</p>
+            <span @click="changePage(4)">立即註冊</span>
+          </div>
+          <div class="otherTypeToLogin">
+            <p>或其它登入方式</p>
+          </div>
+          <div class="otherIcon">
+            <a href="#">
+              <img src="./images/icon/components-icon/fb-Logo.svg" alt="" />
+            </a>
+            <a href="#">
+              <img src="./images/icon/components-icon/google-Logo.svg" alt="" />
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- index 1 忘記密碼接入頁面 -->
+      <div v-if="index === 1" class="loginPage">
+        <div class="pageIsideContainer">
+          <h5>重設密碼</h5>
+          <p class="textColor_m-font">
+            輸入你註冊PetpaGo帳號的電子信箱，我們會發送重設密碼的連結
+          </p>
+          <form action="#" method="post">
+            <div class="sectionHead">
+              <label for="checkEmail">電子信箱</label>
+              <input type="email" placeholder="請輸入Email" id="checkEmail" class="loginType" />
+            </div>
+            <div class="submit">
+              <input type="button" class="btn_5" value="確認" @click="changePage(2)" />
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- index 2 修改密碼頁面 -->
+      <div v-if="index === 2" class="loginPage">
+        <div class="pageIsideContainer">
+          <h5>重設密碼</h5>
+          <form action="#" method="post">
+            <div class="sectionHead">
+              <label for="passwordCheck">新密碼</label>
+              <input type="password" id="passwordCheck" name="password" placeholder="請輸入" class="loginType" />
+            </div>
+            <!-- <div class="sectionBody"> -->
+            <label for="passwordCheck1">請再次輸入新密碼</label>
+            <input type="password" id="passwordCheck1" name="password" placeholder="請輸入" class="loginType" />
+            <!-- </div> -->
+            <div class="submit">
+              <input type="button" class="btn_5" value="確認重設" @click="changePage(3)" />
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- index 3 忘記密碼/設定成功 -->
+      <div v-if="index === 3" class="loginPage succPag">
+        <div class="pageIsideContainer">
+          <img src="./images/icon/components-icon/success.svg" alt="" />
+          <h5 class="mb_24">密碼重設成功</h5>
+          <button type="button" class="btn_5" @click="changePage(0)">
+            確認
+          </button>
+        </div>
+      </div>
+
+      <!-- index 4 註冊會員 -->
+      <div v-if="index === 4" class="loginPage">
+        <div class="pageIsideContainer">
+          <h5>註冊會員</h5>
+
+          <form action="#" method="post">
+            <div class="sectionHead">
+              <label for="member_name">姓名</label>
+              <input type="text" id="member_name" name="member_name" placeholder="請輸入" class="loginType" />
+            </div>
+            <!-- <div class="sectionBody"> -->
+            <label for="user_mail">電子信箱</label>
+            <input type="email" id="user_mail" name="user_mail" placeholder="請輸入" class="loginType" />
+            <!-- </div> -->
+            <!-- <div class="sectionBody"> -->
+            <label for="new_password">使用者密碼</label>
+            <input type="password" id="new_password" name="new_password" placeholder="請輸入" class="loginType" />
+            <!-- </div> -->
+            <!-- <div class="sectionBody"> -->
+            <label for="new_passwordCheck">請再次輸入使用者密碼</label>
+            <input type="password" id="new_passwordCheck" name="new_passwordCheck" placeholder="請輸入"
+              class="loginType" />
+            <!-- </div> -->
+            <div class="submit">
+              <input type="button" class="btn_5" value="立即加入" @click="changePage(0)" />
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<script>
+  // const click_el = document.getElementById("btn_log");
+  // click_el.addEventListener('click', function () {
+  //   const ModalPage_el = document.getElementById("ModalPage");
+  //   ModalPage_el.classList.remove("login123");
+  //   vm.ispop = true;
+  //   vm.changePage(0);
+  // })
+
+  function removeLogin123Class() {
+    setTimeout(() => {
+      const modalPage = document.getElementById("ModalPage");
+      if (modalPage) {
+        modalPage.classList.remove("login123");
+      }
+    }, 10); // 10 毫秒后执行
+  }
+
+  // 调用函数
+  removeLogin123Class();
+
+
+
+  const ModalPage = Vue.createApp({
+    data() {
+      return {
+        text: "Hello World!",
+        returnStatus: "",
+        index: 0,
+        ispop: false,
+        account: "",
+        password: "",
+        success: false
+      };
+    },
+    methods: {
+      changePage(newIndex) {
+        this.index = newIndex;
+      },
+      handleSubmit() {
+        // 執行表單提交的處理
+        fetch("/php/login.php", {
+          method: "POST",
+          mode: "cors",
+          body: new URLSearchParams({
+            account: this.account,
+            password: this.password,
+          }),
+        })
+          .then((response) => response.json()) // 解析 JSON 回應
+          .then((data) => {
+            if (data.status === "success") {
+              // 如果回應為成功，執行頁面跳轉
+              window.open("member.html", "_self");
+            } else if (data.status === "error") {
+              // 如果回應為錯誤，處理無效認證的情況
+              console.log(data.message);
+            }
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      },
+    },
+  });
+
+  const vm = ModalPage.mount("#ModalPage");
+
+</script></li>
+    <li class="userIcon">
+      <svg
+        width="25"
+        height="25"
+        viewBox="0 0 67 68"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M33.5003 0.666748C15.1003 0.666748 0.166992 15.6001 0.166992 34.0001C0.166992 52.4001 15.1003 67.3334 33.5003 67.3334C51.9003 67.3334 66.8337 52.4001 66.8337 34.0001C66.8337 15.6001 51.9003 0.666748 33.5003 0.666748ZM33.5003 14.0001C39.9337 14.0001 45.167 19.2334 45.167 25.6667C45.167 32.1001 39.9337 37.3334 33.5003 37.3334C27.067 37.3334 21.8337 32.1001 21.8337 25.6667C21.8337 19.2334 27.067 14.0001 33.5003 14.0001ZM33.5003 60.6668C26.7337 60.6668 18.7337 57.9334 13.0337 51.0668C18.8723 46.4858 26.0791 43.9961 33.5003 43.9961C40.9216 43.9961 48.1283 46.4858 53.967 51.0668C48.267 57.9334 40.267 60.6668 33.5003 60.6668Z"
+          fill="#09003E"
+        />
+      </svg>
+    </li>
+    <li>
+      <div class="shopping-cart"><!-- 購物車彈跳窗 -->
+
+<!-- first list box2 -->
+<div class="ol-content">
+    <!-- box2-1 -->
+    <div class="ol-contentBox mb_24">
+      <div class="ol-ContText">
+        <div class="ol-title">
+            <h6>寵物接送</h6>
+            <img src="./images/icon/shop-icon/delete.svg" alt="">
+        </div>
+        <p style="color: #555;font-weight: normal; font-size: 14px;">8月17日 ｜ 16:00</p>
+        <div class="ol-info jcSb mb_16">
+          <p style="color: #555;font-weight: normal; font-size: 14px;">轎車</p>
+          <span style="font-size: normal; font-size: 14px;">NT$ 300</span>
+        </div>
+      </div>
+    </div>
+    <!-- box2-2 -->
+    <div class="ol-contentBox mb_24">
+      <div class="ol-ContText">
+        <div class="ol-title">
+            <h6>寵物接送</h6>
+            <img src="./images/icon/shop-icon/delete.svg" alt="">
+        </div>
+        <p style="color: #555;font-weight: normal; font-size: 14px;">8月17日-8月19日 (3晚)</p>
+        <div class="ol-info jcSb mb_16">
+          <p style="color: #555;font-weight: normal; font-size: 14px;">狗套房X1 ｜ 小型犬</p>
+          <span style="font-size: normal; font-size: 14px;">NT$ 2,400</span>
+        </div>
+      </div>
+    </div>
+    <!-- box2-3 -->
+    <div class="ol-contentBox mb_24">
+      <div class="ol-ContText">
+        <div class="ol-title">
+            <h6>快樂寵物旅館</h6>
+            <img src="./images/icon/shop-icon/delete.svg" alt="">
+        </div>
+        <p style="color: #555;font-weight: normal; font-size: 14px;">8月17日-8月19日 (3晚)</p>
+        <div class="ol-info jcSb mb_16">
+          <p style="color: #555;font-weight: normal; font-size: 14px;">貓套房X1 ｜ 貓咪</p>
+          <span style="font-size: normal; font-size: 14px;">NT$ 2,400</span>
+        </div>
+      </div>
+    </div>
+    <!-- checkout-note -->
+    <div class="checkout">
+        <div class="product-count">
+            <p style="color: #555; font-size: normal; font-size: 14px;">共3件商品</p>
+            <span style="font-size: 18px;">NT$ 5,100</span>
+        </div>
+        <button class="btn_4">查看購物車</button>
+    </div>
+  </div>
+
+</div>
+    </li>
+  </ul>
+
+  <!-- hamburger -->
+  <div class="hamburgerList col-10">
+    <a href="shopping.html">
+      <img src="./images/icon/header-icon/shoop.svg" alt="shopCar"
+    /></a>
+
+    <div class="l-header">
+      <div class="l-header__hambuger">
+        <div class="hambuger js-click">
+          <div class="hambuger__icon">
+            <div class="lines">
+              <div class="line line--top"></div>
+              <div class="line line--bottom"></div>
+            </div>
+          </div>
+
+          <div class="hambuger__body">
+            <div class="bg" id="hambugerBg"></div>
+            <div class="body" id="hambugerBody">
+              <ul class="menu-list">
+                <li class="item">
+                  <p class="title">
+                    <img
+                      src="./images/logo/PetpaGo-whiteLogo.svg"
+                      alt="logo"
+                      width="150px"
+                    />
+                    <!-- <span class="en">Top</span>
+                    <span class="ja">回首頁</span> -->
+                  </p>
+                  <a class="link" href="/"></a>
+                </li>
+
+                <li class="item">
+                  <p class="title">
+                    <span class="en">Go旅宿</span>
+                    <span class="ja">你出國 毛小孩也度假去</span>
+                  </p>
+                  <a class="link" href="hostel.html"></a>
+                </li>
+
+                <li class="item">
+                  <p class="title">
+                    <span class="en">Go司機</span>
+                    <span class="ja">無縫接送毛小孩</span>
+                  </p>
+                  <a class="link" href="driver.html"></a>
+                </li>
+
+                <li class="item">
+                  <p class="title">
+                    <span class="en">Go有料</span>
+                    <span class="ja">hiHi 我們一家毛</span>
+                  </p>
+                  <a class="link" href="photowall.html"></a>
+                </li>
+
+                <li class="item">
+                  <p class="title">
+                    <span class="en">會員中心</span>
+                    <span class="ja">累計點數 賺回饋goGo</span>
+                  </p>
+                  <a class="link" href="member.html"></a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.3/TweenMax.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mo-js/0.288.2/mo.min.js"></script>
+<script>
+  // rwd nav button
+  function navigateTo(url) {
+            window.location.href = url;
+        };
+  
+  class Hambuger {
+    constructor() {
+      window.pc = true;
+
+      let shapePhilosophy = new mojs.Shape({
+        parent: document.getElementById("hambugerBg"),
+        shape: "circle",
+        radius: window.pc ? 20 : 20,
+        // angle: 30,
+        fill: "#6e60f6",
+        opacity: 1,
+        isShowStart: true,
+      });
+
+      let hambugerIcon = document.getElementsByClassName("hambuger__icon")[0];
+      let lineTop = document.getElementsByClassName("line--top")[0];
+      let lineBottom = document.getElementsByClassName("line--bottom")[0];
+      let menuBody = document.getElementById("hambugerBody");
+      let items = menuBody.querySelectorAll(".item");
+
+      hambugerIcon.addEventListener("click", () => {
+        hambugerIcon.classList.toggle("is-open");
+        if (hambugerIcon.classList.contains("is-open")) {
+          shapePhilosophy.then({
+            scale: window.pc ? 80 : 40,
+            duration: 600,
+            // opacity: 1,
+            easing: "expo.out",
+          });
+          menuBody.style.display = "block";
+          TweenMax.staggerTo(
+            items,
+            0.3,
+            {
+              opacity: 1,
+              y: 0,
+              delay: 0.2,
+              ease: Power2.easeOut,
+            },
+            0.075
+          );
+          TweenMax.to(lineTop, 0.4, {
+            y: 2,
+            ease: Power4.easeOut,
+            onComplete: () => {
+              TweenMax.to(lineTop, 0.4, {
+                rotation: 45,
+                transformOrigin: "center center",
+                ease: Power4.easeOut,
+              });
+            },
+          });
+          TweenMax.to(lineBottom, 0.4, {
+            y: -2,
+            transformOrigin: "left top",
+            ease: Power4.easeOut,
+            onComplete: () => {
+              TweenMax.to(lineBottom, 0.4, {
+                rotation: -45,
+                transformOrigin: "center center",
+                ease: Power4.easeOut,
+              });
+            },
+          });
+          // 禁用捲軸
+          document.body.style.overflow = "hidden";
+        } else {
+          shapePhilosophy.then({
+            scale: 1,
+            duration: 400,
+            delay: 300,
+            easing: "expo.out",
+          });
+          TweenMax.staggerTo(
+            items,
+            0.2,
+            {
+              opacity: 0,
+              y: "20px",
+              onComplete: () => {
+                menuBody.style.display = "none";
+              },
+            },
+            0.01
+          );
+          TweenMax.to(lineTop, 0.4, {
+            rotation: 0,
+            transformOrigin: "center center",
+            ease: Power4.easeOut,
+            onComplete: () => {
+              TweenMax.to(lineTop, 0.4, {
+                y: 0,
+                ease: Power4.easeOut,
+              });
+            },
+          });
+          TweenMax.to(lineBottom, 0.4, {
+            rotation: 0,
+            transformOrigin: "center center",
+            ease: Power4.easeOut,
+            onComplete: () => {
+              TweenMax.to(lineBottom, 0.4, {
+                y: 0,
+                transformOrigin: "left top",
+                ease: Power4.easeOut,
+              });
+            },
+          });
+          // 啟用捲軸
+          document.body.style.overflow = "auto";
+        }
+        shapePhilosophy.play();
+      });
+    }
+  }
+
+  new Hambuger();
+</script>
+
+<script>
+  //滑鼠移到購物車上面的展示效果
+  document.addEventListener("DOMContentLoaded", () => {
+    const shoopElement = document.querySelector(".shoop");
+    const shoppingCartElement = document.querySelector(".shopping-cart");
+
+    shoopElement.addEventListener("mouseenter", () => {
+      shoppingCartElement.style.display = "block";
+    });
+
+    shoopElement.addEventListener("mouseleave", () => {
+      shoppingCartElement.style.display = "none";
+    });
+  });
+</script>
+
+    <div class="container photoWallMain" id="photofall">
+      <!-- 瀑布流組件 Please 別碰 這是magic -->
+      <photo-fall :items="items"></photo-fall>
+      <!-- 瀑布流元件 Please 別碰 這是magic -->
+
+      <div class="postYourImage" @click="show = true">
+        <img src="./images/icon/photowall-icon/plus.svg" alt="">
+      </div>
+      <div v-if="show === true" class="lightbox" @click="show = false">
+        <div class="loginpage_base" @click.stop>
+          <div class="close">
+            <div class="icon" @click="show = false">
+              <img src="./images/icon/components-icon/close-line.svg" alt="close" />
+            </div>
+          </div>
+          <div class="loginPage">
+            <div class="photoTitle">
+              <h5>建立新貼文</h5>
+            </div>
+            <form action="#">
+              <div class="dragArea" @dragover.prevent @drop="handleDrop" @click="triggerFileInput">
+                <div class="preViewSide">
+                  <img v-if="previewImage" :src="previewImage" alt="Preview">
+                </div>
+                <input ref="fileInput" type="file" style="display: none" @change="handleFileSelect" />
+              </div>
+              <button type="button" class="btn_5" @click="uploadImage" :disabled="!previewImage">發布</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer>
+  <div class="footer_container">
+    <div class="f_box">
+      <img src="./images/logo/PetpaGo-whiteLogo.svg" alt="PetpaGo" />
+      <ul>
+        <li><a href="about.html">關於我們</a></li>
+        <li><a href="faq.html">常見問題</a></li>
+        <li><a href="#">廣告服務</a></li>
+        <li><a href="#">與我們聯絡</a></li>
+      </ul>
+    </div>
+    <div class="f_box">
+      <p>
+        本網站為緯育TibaMe【第85期】前端工程師專業技術養成班學員作品，僅供學習、展示之用途。
+      </p>
+      <ul>
+        <li>
+          <img src="./images/icon/footer-icon/Facebook.svg" alt="Facebook" />
+        </li>
+        <li>
+          <img src="./images/icon/footer-icon/Twitter.svg" alt="Twitter" />
+        </li>
+        <li>
+          <img src="./images/icon/footer-icon/Instagram.svg" alt="Instagram" />
+        </li>
+      </ul>
+    </div>
+    <div class="f_box boxLine">
+      <p>©2023 PetpaGO Inc. All rights reserved.</p>
+      <ul>
+        <li><a href="#">服務聲明</a></li>
+        <li><a href="#">隱私權聲明</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js" integrity="sha512-WFN04846sdKMIP5LKNphMaWzU7YpMyCU245etK3g/2ARYbPK9Ub18eG+ljU96qKRCWh+quCY7yefSmlkQw1ANQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="../js/photofall.js" type="module"></script>
+</body>
+
+</html>
