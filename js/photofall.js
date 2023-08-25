@@ -89,7 +89,7 @@ var app2 = Vue.createApp({
       event.preventDefault(); //用來防止圖片拖進瀏覽器的預設事件
 
       var file = event.dataTransfer.files[0];
-      if (file && file.type.startsWith('image/')) {
+      if (file && file.type.startsWith('./image/')) {
         var reader = new FileReader();
         reader.onload = function () {
           _this.previewImage = reader.result;
@@ -111,7 +111,7 @@ var app2 = Vue.createApp({
     handleFileSelect: function handleFileSelect(event) {
       var _this2 = this;
       var file = event.target.files[0];
-      if (file && file.type.startsWith('image/')) {
+      if (file && file.type.startsWith('./image/')) {
         var reader = new FileReader();
         reader.onload = function () {
           _this2.previewImage = reader.result;
