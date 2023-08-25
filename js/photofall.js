@@ -1,6 +1,6 @@
 "use strict";
 
-var _waterfall = _interopRequireDefault(require("waterfall.js"));
+var _waterfall = _interopRequireDefault(require("./js/waterfall.js"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 var app2 = Vue.createApp({
   data: function data() {
