@@ -23,19 +23,42 @@
     <img src="./images/logo/PetpaGo-logo.svg" alt="PetpaGo logo" />
   </a>
   <ul class="navList col-10">
-    <li class="nav_item" data-content="GO旅宿" onclick="navigateTo('hostel.html')">
-      <a href="./hostel.html">GO旅宿</a>
+    <li
+      class="nav_item"
+      data-content="GO旅宿"
+      onclick="navigateTo('hostel.html')"
+    >
+      <a id="hostelLink" href="./hostel.html">GO旅宿</a>
     </li>
-    <li class="nav_item" data-content="GO司機" onclick="navigateTo('driver.html')">
-      <a href="./driver.html">GO司機</a>
+    <li
+      class="nav_item"
+      data-content="GO司機"
+      onclick="navigateTo('driver.html')"
+    >
+      <a id="driverLink" href="./driver.html">GO司機</a>
     </li>
-    <li class="nav_item" data-content="GO有料" onclick="navigateTo('photowall.html')">
-      <a href="./photowall.html">GO有料</a>
+    <li
+      class="nav_item"
+      data-content="GO有料"
+      onclick="navigateTo('photowall.html')"
+    >
+      <a id="photoLink" href="./photowall.html">GO有料</a>
     </li>
     <li class="shoop">
-      <a href="./shopping.html">
-        <img src="./images/icon/header-icon/shoop.svg" alt="shopCar"
-      /></a>
+      <a id="shoppLink" href="./shopping.html">
+        <!-- <img src="./images/icon/header-icon/shoop.svg" alt="shopCar"/> -->
+        <svg
+          width="24"
+          height="21"
+          viewBox="0 0 24 21"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M9.03906 15.5254C7.42773 15.5254 6.55859 14.5586 6.31445 12.9668L4.88867 3.23047H2.21289C1.55859 3.23047 0.992188 2.67383 0.992188 2C0.992188 1.32617 1.55859 0.769531 2.21289 0.769531H5.42578C6.65625 0.769531 7.11523 1.27734 7.26172 2.27344L7.36914 3.04492H22.5742C23.4629 3.04492 23.9414 3.55273 23.9414 4.27539C23.9414 4.41211 23.9121 4.59766 23.8926 4.73438L23.2383 9.19727C23.0039 10.8184 22.125 11.7754 20.5234 11.7754H8.60938L8.75586 12.7617C8.80469 13.1133 9.00977 13.3477 9.3418 13.3477H20.3477C20.9434 13.3477 21.4707 13.7773 21.4707 14.4316C21.4707 15.0957 20.9434 15.5254 20.3477 15.5254H9.03906ZM21.334 5.22266H7.68164L8.30664 9.59766L20.25 9.58789C20.5918 9.58789 20.7676 9.37305 20.8262 9.02148L21.334 5.22266ZM9.86914 20.6523C8.83398 20.6523 7.98438 19.8125 7.98438 18.7578C7.98438 17.7129 8.83398 16.873 9.86914 16.873C10.9238 16.873 11.7637 17.7129 11.7637 18.7578C11.7637 19.8125 10.9238 20.6523 9.86914 20.6523ZM18.7266 20.6523C17.6816 20.6523 16.832 19.8125 16.832 18.7578C16.832 17.7129 17.6816 16.873 18.7266 16.873C19.7715 16.873 20.6113 17.7129 20.6113 18.7578C20.6113 19.8125 19.7715 20.6523 18.7266 20.6523Z"
+          />
+        </svg>
+      </a>
     </li>
     <li><!-- #ModalPage為Vue掛載的位置，不管用什麼裝置觸發，都必須要有這個ID -->
 <!-- <div type="button" id="btn_log" class="btn_4">
@@ -45,16 +68,28 @@
 <div id="ModalPage" class="login123">
   <!-- 此處為用@click綁定事件，用data中的"ispop"資料，來控制燈箱跳出
         如果要綁定在其它物件上，只要打上@click這條即可觸發。 -->
-  <div type="button" @click="ispop = true; changePage(0)" class="btn_4" v-show="success === false">
+  <div
+    type="button"
+    @click="ispop = true; changePage(0)"
+    class="btn_4"
+    v-show="success === false"
+  >
     登入
   </div>
   <transition name="slide-fade">
     <div v-show="success === true">
       <a href="./member.html">
-        <svg width="25" height="25" viewBox="0 0 67 68" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg
+          width="25"
+          height="25"
+          viewBox="0 0 67 68"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
           <path
             d="M33.5003 0.666748C15.1003 0.666748 0.166992 15.6001 0.166992 34.0001C0.166992 52.4001 15.1003 67.3334 33.5003 67.3334C51.9003 67.3334 66.8337 52.4001 66.8337 34.0001C66.8337 15.6001 51.9003 0.666748 33.5003 0.666748ZM33.5003 14.0001C39.9337 14.0001 45.167 19.2334 45.167 25.6667C45.167 32.1001 39.9337 37.3334 33.5003 37.3334C27.067 37.3334 21.8337 32.1001 21.8337 25.6667C21.8337 19.2334 27.067 14.0001 33.5003 14.0001ZM33.5003 60.6668C26.7337 60.6668 18.7337 57.9334 13.0337 51.0668C18.8723 46.4858 26.0791 43.9961 33.5003 43.9961C40.9216 43.9961 48.1283 46.4858 53.967 51.0668C48.267 57.9334 40.267 60.6668 33.5003 60.6668Z"
-            fill="#09003E" />
+            fill="#09003E"
+          />
         </svg>
       </a>
     </div>
@@ -68,7 +103,10 @@
         <!-- close中存在關閉燈箱渲染的控件，為燈箱主體，不可更改 -->
         <div class="close">
           <div class="icon" @click="ispop = false">
-            <img src="./images/icon/components-icon/close-line.svg" alt="close" />
+            <img
+              src="./images/icon/components-icon/close-line.svg"
+              alt="close"
+            />
           </div>
         </div>
         <!-- 此處為燈箱切換頁面的主體，用v-if渲染出不同的內文，用data:index來控制要渲染的頁面。
@@ -85,18 +123,35 @@
                   <!-- sectionHead本身不包含任何屬性，為了要完全貼齊form的上轅。 -->
                   <div class="sectionHead">
                     <label for="account">帳號</label>
-                    <input type="email" id="account" name="account" placeholder="請輸入E-MAIL" class="loginType"
-                      v-model="account" />
+                    <input
+                      type="email"
+                      id="account"
+                      name="account"
+                      placeholder="請輸入Email"
+                      class="loginType"
+                      v-model="account"
+                    />
                   </div>
                   <!-- sectionBody包含了向上與向下的間距，要調整的方向在這裡。 -->
                   <!-- <div class="sectionBody"> -->
                   <label for="password">密碼</label>
-                  <input type="password" id="password" name="password" placeholder="請輸入密碼" class="loginType noMb24"
-                    v-model="password" />
+                  <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="請輸入密碼"
+                    class="loginType noMb24"
+                    v-model="password"
+                  />
                   <a class="mb_24" @click="changePage(1)">忘記密碼?</a>
                   <!-- </div> -->
                   <div class="submit">
-                    <input type="button" class="btn_5" value="登入" @click="ispop = false, success = true" />
+                    <input
+                      type="button"
+                      class="btn_5"
+                      value="登入"
+                      @click="ispop = false, success = true"
+                    />
                   </div>
                 </form>
                 <div class="register">
@@ -108,18 +163,22 @@
                 </div>
                 <div class="otherIcon">
                   <a href="#">
-                    <img src="./images/icon/components-icon/fb-Logo.svg" alt="" />
+                    <img
+                      src="./images/icon/components-icon/fb-Logo.svg"
+                      alt=""
+                    />
                   </a>
                   <a href="#">
-                    <img src="./images/icon/components-icon/google-Logo.svg" alt="" />
+                    <img
+                      src="./images/icon/components-icon/google-Logo.svg"
+                      alt=""
+                    />
                   </a>
                 </div>
               </div>
             </div>
           </template>
-
         </transition>
-
 
         <!-- index 1 忘記密碼接入頁面 -->
         <transition name="slide-fade">
@@ -132,16 +191,25 @@
               <form action="#" method="post">
                 <div class="sectionHead">
                   <label for="checkEmail">電子信箱</label>
-                  <input type="email" placeholder="請輸入Email" id="checkEmail" class="loginType" />
+                  <input
+                    type="email"
+                    placeholder="請輸入Email"
+                    id="checkEmail"
+                    class="loginType"
+                  />
                 </div>
                 <div class="submit">
-                  <input type="button" class="btn_5" value="確認" @click="changePage(2)" />
+                  <input
+                    type="button"
+                    class="btn_5"
+                    value="確認"
+                    @click="changePage(2)"
+                  />
                 </div>
               </form>
             </div>
           </div>
         </transition>
-
 
         <!-- index 2 修改密碼頁面 -->
         <transition name="slide-fade">
@@ -152,22 +220,37 @@
                 <form action="#" method="post">
                   <div class="sectionHead">
                     <label for="passwordCheck">新密碼</label>
-                    <input type="password" id="passwordCheck" name="password" placeholder="請輸入" class="loginType" />
+                    <input
+                      type="password"
+                      id="passwordCheck"
+                      name="password"
+                      placeholder="請輸入"
+                      class="loginType"
+                    />
                   </div>
                   <!-- <div class="sectionBody"> -->
                   <label for="passwordCheck1">請再次輸入新密碼</label>
-                  <input type="password" id="passwordCheck1" name="password" placeholder="請輸入" class="loginType" />
+                  <input
+                    type="password"
+                    id="passwordCheck1"
+                    name="password"
+                    placeholder="請輸入"
+                    class="loginType"
+                  />
                   <!-- </div> -->
                   <div class="submit">
-                    <input type="button" class="btn_5" value="確認重設" @click="changePage(3)" />
+                    <input
+                      type="button"
+                      class="btn_5"
+                      value="確認重設"
+                      @click="changePage(3)"
+                    />
                   </div>
                 </form>
               </div>
             </div>
           </template>
-
         </transition>
-
 
         <!-- index 3 忘記密碼/設定成功 -->
         <transition name="slide-fade">
@@ -182,9 +265,7 @@
               </div>
             </div>
           </template>
-
         </transition>
-
 
         <!-- index 4 註冊會員 -->
         <transition name="slide-fade">
@@ -196,106 +277,65 @@
                 <form action="#" method="post">
                   <div class="sectionHead">
                     <label for="member_name">姓名</label>
-                    <input type="text" id="member_name" name="member_name" placeholder="請輸入" class="loginType" />
+                    <input
+                      type="text"
+                      id="member_name"
+                      name="member_name"
+                      placeholder="請輸入"
+                      class="loginType"
+                    />
                   </div>
                   <!-- <div class="sectionBody"> -->
                   <label for="user_mail">電子信箱</label>
-                  <input type="email" id="user_mail" name="user_mail" placeholder="請輸入" class="loginType" />
+                  <input
+                    type="email"
+                    id="user_mail"
+                    name="user_mail"
+                    placeholder="請輸入"
+                    class="loginType"
+                  />
                   <!-- </div> -->
                   <!-- <div class="sectionBody"> -->
                   <label for="new_password">使用者密碼</label>
-                  <input type="password" id="new_password" name="new_password" placeholder="請輸入" class="loginType" />
+                  <input
+                    type="password"
+                    id="new_password"
+                    name="new_password"
+                    placeholder="請輸入"
+                    class="loginType"
+                  />
                   <!-- </div> -->
                   <!-- <div class="sectionBody"> -->
                   <label for="new_passwordCheck">請再次輸入使用者密碼</label>
-                  <input type="password" id="new_passwordCheck" name="new_passwordCheck" placeholder="請輸入"
-                    class="loginType" />
+                  <input
+                    type="password"
+                    id="new_passwordCheck"
+                    name="new_passwordCheck"
+                    placeholder="請輸入"
+                    class="loginType"
+                  />
                   <!-- </div> -->
                   <div class="submit">
-                    <input type="button" class="btn_5" value="立即加入" @click="changePage(0)" />
+                    <input
+                      type="button"
+                      class="btn_5"
+                      value="立即加入"
+                      @click="changePage(0)"
+                    />
                   </div>
                 </form>
               </div>
             </div>
           </template>
-
         </transition>
-
       </div>
     </div>
   </template>
-
 </div>
 <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-<script>
-  // const click_el = document.getElementById("btn_log");
-  // click_el.addEventListener('click', function () {
-  //   const ModalPage_el = document.getElementById("ModalPage");
-  //   ModalPage_el.classList.remove("login123");
-  //   vm.ispop = true;
-  //   vm.changePage(0);
-  // })
+<script src="js/loginpage.js"></script>
 
-  function removeLogin123Class() {
-    setTimeout(() => {
-      const modalPage = document.getElementById("ModalPage");
-      if (modalPage) {
-        modalPage.classList.remove("login123");
-      }
-    }, 10); // 10 毫秒后执行
-  }
-
-  // 调用函数
-  removeLogin123Class();
-
-
-
-  const ModalPage = Vue.createApp({
-    data() {
-      return {
-        text: "Hello World!",
-        returnStatus: "",
-        index: 0,
-        ispop: false,
-        account: "",
-        password: "",
-        success: false
-      };
-    },
-    methods: {
-      changePage(newIndex) {
-        this.index = newIndex;
-      },
-      handleSubmit() {
-        // 執行表單提交的處理
-        fetch("/php/login.php", {
-          method: "POST",
-          mode: "cors",
-          body: new URLSearchParams({
-            account: this.account,
-            password: this.password,
-          }),
-        })
-          .then((response) => response.json()) // 解析 JSON 回應
-          .then((data) => {
-            if (data.status === "success") {
-              // 如果回應為成功，執行頁面跳轉
-              window.open("member.html", "_self");
-            } else if (data.status === "error") {
-              // 如果回應為錯誤，處理無效認證的情況
-              console.log(data.message);
-            }
-          })
-          .catch((error) => {
-            console.error("Error:", error);
-          });
-      },
-    },
-  });
-
-  const vm = ModalPage.mount("#ModalPage");
-
-</script></li>
+</li>
     <li class="userIcon">
       <svg
         width="25"
@@ -446,146 +486,7 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.3/TweenMax.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mo-js/0.288.2/mo.min.js"></script>
-<script>
-  // rwd nav button
-  function navigateTo(url) {
-            window.location.href = url;
-        };
-  
-  class Hambuger {
-    constructor() {
-      window.pc = true;
-
-      let shapePhilosophy = new mojs.Shape({
-        parent: document.getElementById("hambugerBg"),
-        shape: "circle",
-        radius: window.pc ? 20 : 20,
-        // angle: 30,
-        fill: "#6e60f6",
-        opacity: 1,
-        isShowStart: true,
-      });
-
-      let hambugerIcon = document.getElementsByClassName("hambuger__icon")[0];
-      let lineTop = document.getElementsByClassName("line--top")[0];
-      let lineBottom = document.getElementsByClassName("line--bottom")[0];
-      let menuBody = document.getElementById("hambugerBody");
-      let items = menuBody.querySelectorAll(".item");
-
-      hambugerIcon.addEventListener("click", () => {
-        hambugerIcon.classList.toggle("is-open");
-        if (hambugerIcon.classList.contains("is-open")) {
-          shapePhilosophy.then({
-            scale: window.pc ? 80 : 40,
-            duration: 600,
-            // opacity: 1,
-            easing: "expo.out",
-          });
-          menuBody.style.display = "block";
-          TweenMax.staggerTo(
-            items,
-            0.3,
-            {
-              opacity: 1,
-              y: 0,
-              delay: 0.2,
-              ease: Power2.easeOut,
-            },
-            0.075
-          );
-          TweenMax.to(lineTop, 0.4, {
-            y: 2,
-            ease: Power4.easeOut,
-            onComplete: () => {
-              TweenMax.to(lineTop, 0.4, {
-                rotation: 45,
-                transformOrigin: "center center",
-                ease: Power4.easeOut,
-              });
-            },
-          });
-          TweenMax.to(lineBottom, 0.4, {
-            y: -2,
-            transformOrigin: "left top",
-            ease: Power4.easeOut,
-            onComplete: () => {
-              TweenMax.to(lineBottom, 0.4, {
-                rotation: -45,
-                transformOrigin: "center center",
-                ease: Power4.easeOut,
-              });
-            },
-          });
-          // 禁用捲軸
-          document.body.style.overflow = "hidden";
-        } else {
-          shapePhilosophy.then({
-            scale: 1,
-            duration: 400,
-            delay: 300,
-            easing: "expo.out",
-          });
-          TweenMax.staggerTo(
-            items,
-            0.2,
-            {
-              opacity: 0,
-              y: "20px",
-              onComplete: () => {
-                menuBody.style.display = "none";
-              },
-            },
-            0.01
-          );
-          TweenMax.to(lineTop, 0.4, {
-            rotation: 0,
-            transformOrigin: "center center",
-            ease: Power4.easeOut,
-            onComplete: () => {
-              TweenMax.to(lineTop, 0.4, {
-                y: 0,
-                ease: Power4.easeOut,
-              });
-            },
-          });
-          TweenMax.to(lineBottom, 0.4, {
-            rotation: 0,
-            transformOrigin: "center center",
-            ease: Power4.easeOut,
-            onComplete: () => {
-              TweenMax.to(lineBottom, 0.4, {
-                y: 0,
-                transformOrigin: "left top",
-                ease: Power4.easeOut,
-              });
-            },
-          });
-          // 啟用捲軸
-          document.body.style.overflow = "auto";
-        }
-        shapePhilosophy.play();
-      });
-    }
-  }
-
-  new Hambuger();
-</script>
-
-<script>
-  //滑鼠移到購物車上面的展示效果
-  document.addEventListener("DOMContentLoaded", () => {
-    const shoopElement = document.querySelector(".shoop");
-    const shoppingCartElement = document.querySelector(".shopping-cart");
-
-    shoopElement.addEventListener("mouseenter", () => {
-      shoppingCartElement.style.display = "block";
-    });
-
-    shoopElement.addEventListener("mouseleave", () => {
-      shoppingCartElement.style.display = "none";
-    });
-  });
-</script>
+<script src="../js/header.js"></script>
 
     <div class="banner mb_100">
       <div class="parallax-bg"></div>
@@ -873,10 +774,6 @@
           </div>
         </div>
       </div>
-
-      
-
-
       <!-- End -->
     </div>
     <footer>
@@ -917,78 +814,7 @@
 </footer>
 
 
-    <script>
-      // banner
-      window.addEventListener("scroll", function () {
-        const parallaxBg = document.querySelector(".parallax-bg");
-        const scrollValue = window.scrollY;
-        parallaxBg.style.transform = `translateY(${scrollValue * 0.7}px)`;
-      });
-
-      //頭部篩選
-      const faq = Vue.createApp({
-        data() {
-          return {
-            faq_index: 1,
-            qAnda: [{
-              name: 11,
-              answer: 11,
-            }]
-          }
-        },
-        mounted() {
-          this.setupAccordion();
-        },
-        methods: {
-          faq_changePage(index) {
-            this.faq_index = index;
-          },
-          setupAccordion() {
-            const items = document.querySelectorAll(".accordion button");
-
-            function toggleAccordion() {
-              const itemToggle = this.getAttribute("aria-expanded");
-
-              for (let i = 0; i < items.length; i++) {
-                items[i].setAttribute("aria-expanded", "false");
-              }
-
-              if (itemToggle == "false") {
-                this.setAttribute("aria-expanded", "true");
-              }
-            }
-
-            items.forEach((item) => item.addEventListener("click", toggleAccordion));
-          }
-        }
-      })
-
-      //手風琴效果
-      const vm_faq = faq.mount("#faq");
-
-      const faqItems = document.querySelectorAll('.faq_list');
-
-      faqItems.forEach(item => {
-        item.addEventListener('click', function () {
-          // 移除所有項目的 active 類
-          faqItems.forEach(item => {
-            item.classList.remove('active');
-          });
-          // 將點擊的項目添加 active 類
-          this.classList.add('active');
-        });
-      });
-
-
-      // 預設開頁面執行一次
-      
-      // 預設展開第一個手風琴區塊
-      const firstAccordionButton = document.querySelector('.accordion button');
-      firstAccordionButton.setAttribute('aria-expanded', 'true');
-      
-      
-
-    </script>
+    <script src="./js/faq.js"></script>
 </body>
 
 </html>
