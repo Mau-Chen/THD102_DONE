@@ -1,8 +1,1 @@
-"use strict";
-
-var click_el = document.getElementById("showPopLogin");
-click_el.addEventListener("click", function () {
-  var ModalPage_el = document.getElementById("ModalPage");
-  vm.ispop = true;
-  vm.changePage(4);
-});
+const click_el=document.getElementById("showPopLogin");click_el.addEventListener("click",function(){document.getElementById("ModalPage");vm.ispop=!0,vm.changePage(4)});
